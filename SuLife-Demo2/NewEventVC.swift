@@ -138,72 +138,14 @@ class NewEventVC: UIViewController, UIScrollViewDelegate {
         
         NSLog("PostData: %@",post);
         
-        let url:NSURL = NSURL(string: eventURL)!
+        jsonData = commonMethods.sendRequest(eventURL, postString: post, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
-        
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        
-                        if (success == "OK!") {
-                            NSLog("Add Event Successfully")
-                            
-                            //var eventToken = jsonResult.valueForKey("Event") as! NSString as String
-                            self.navigationController!.popToRootViewControllerAnimated(true)
-                            
-                        } else {
-                            let myAlert = UIAlertController(title: "Add New Event Failed!", message: "Please Try Again!", preferredStyle: UIAlertControllerStyle.Alert)
-                            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                            myAlert.addAction(okAction)
-                            self.presentViewController(myAlert, animated:true, completion:nil)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Add New Event Failed!", message: "System Error!", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Add New Event Failed!", message: "Response Error!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+
     }
     
     @IBAction func shareEvent(sender: UISwitch) {
