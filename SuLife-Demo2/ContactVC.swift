@@ -51,10 +51,6 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
         blur.removeFromSuperview()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        stopActivityIndicator()
-    }
-    
     // <<<<<
     override func viewDidAppear(animated: Bool) {
         spinner.stopAnimating()
