@@ -56,7 +56,7 @@ class TaskDetailVC: UIViewController {
             // MARK : post request to server
             
             self.params = ""
-            self.jsonData = self.commonMethods.sendRequest(taskURL, postString: self.params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            self.jsonData = self.commonMethods.sendRequest(taskURL, postString: self.params, postMethod: "DELETE", postHeader: accountToken, accessString: "x-access-token", sender: self)
             
             print("JSON data returned : ", self.jsonData)
            	if (self.jsonData.objectForKey("message") == nil) {
@@ -101,79 +101,21 @@ class TaskDetailVC: UIViewController {
         let taskTime = dateFormatter.stringFromDate(taskDetail!.taskTime)
         let finished = false
         
-        let post:NSString = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
         
-        NSLog("PostData: %@",post);
+        // MARK : post request to server
         
-        let edittaskURL = taskURL + "/" + (taskDetail!.id as String)
-        let url:NSURL = NSURL(string: edittaskURL)!
+        params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
+        jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        
-                        
-                        // Ok ????????
-                        if (success != "OK!") {
-                            NSLog("Mark Task Failed")
-                            let myAlert = UIAlertController(title: "Access Failed!", message: "Please Log In Again! ", preferredStyle: UIAlertControllerStyle.Alert)
-                            
-                            myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                                myAlert .dismissViewControllerAnimated(true, completion: nil)
-                            }))
-                            presentViewController(myAlert, animated: true, completion: nil)
-                            
-                        } else {
-                            self.navigationController?.popViewControllerAnimated(true)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Edit task Failed!", message: "System Error!", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Edit task Failed!", message: "Response Error!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+        self.navigationController?.popViewControllerAnimated(true)
     }
+    
+        
 }
 

@@ -10,6 +10,12 @@ import UIKit
 
 class DoneListVC: UITableViewController {
     
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
+    
     // MARK: Properties
     
     @IBOutlet var TodoList: UITableView!
@@ -59,77 +65,24 @@ class DoneListVC: UITableViewController {
         let sd = stringFromDate(date).componentsSeparatedByString(" ")
         let taskTime = sd[0] + " 00:01"
         
-        /* get data from server */
-        let post:NSString = "title=&detail=&establishTime=\(taskTime)"
-        NSLog("PostData: %@",post);
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        let url:NSURL = NSURL(string: taskByDateURL)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "post"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
+
+        // MARK : post request to server
         
-        var reponseError: NSError?
-        var response: NSURLResponse?
+        params = "title=&detail=&establishTime=\(taskTime)"
+        jsonData = commonMethods.sendRequest(taskByDateURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            if(res == nil){
-                NSLog("No Response!");
+        resArray = jsonData.valueForKey("Tasks") as! [NSDictionary]
+        for task in resArray {
+            if ((task.objectForKey("finished") as! Bool) == true) {
+                finishedList.append(task)
             }
-            
-            let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-            
-            NSLog("Response ==> %@", responseData);
-            
-            var error: NSError?
-            
-            do {
-                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                    
-                    let success:NSString = jsonResult.valueForKey("message") as! NSString
-                    
-                    if (success != "OK! Task list followed") {
-                        NSLog("Get Task Failed")
-                        let myAlert = UIAlertController(title: "Access Failed!", message: "Please Log In Again! ", preferredStyle: UIAlertControllerStyle.Alert)
-                        
-                        myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                            myAlert .dismissViewControllerAnimated(true, completion: nil)
-                        }))
-                        presentViewController(myAlert, animated: true, completion: nil)
-                        
-                    } else {
-                        resArray = jsonResult.valueForKey("Tasks") as! [NSDictionary]
-                        for task in resArray {
-                            if ((task.objectForKey("finished") as! Bool) == true) {
-                                finishedList.append(task)
-                            }
-                        }
-                    }
-                }
-            } catch {
-                print(error)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-            if let error = reponseError {
-                myAlert.message = (error.localizedDescription)
-            }
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
         }
-        
         self.tableView.reloadData()
     }
     

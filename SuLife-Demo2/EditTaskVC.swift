@@ -10,6 +10,13 @@ import UIKit
 
 class EditTaskVC: UIViewController {
     
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
+
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextField: UITextView!
     
@@ -97,67 +104,20 @@ class EditTaskVC: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         taskTime = dateFormatter.stringFromDate(taskTimePicker.date)
         
-        // Post to server
-        let post:NSString = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)"
         
-        NSLog("PostData: %@",post);
+        // MARK : post request to server
         
-        let edittaskURL = taskURL + "/" + (taskDetail!.id as String)
-        let url:NSURL = NSURL(string: edittaskURL)!
+        params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)"
+        jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        //var taskToken = jsonResult.valueForKey("task") as! NSString as String
-                        self.navigationController!.popToRootViewControllerAnimated(true)
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Edit task Failed!", message: "System Error!", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Edit task Failed!", message: "Response Error!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+        self.navigationController!.popToRootViewControllerAnimated(true)
+
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
