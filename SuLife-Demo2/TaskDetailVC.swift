@@ -10,6 +10,12 @@ import UIKit
 
 class TaskDetailVC: UIViewController {
     
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
+    
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var detailTextField: UITextView!
     @IBOutlet weak var timeLable: UILabel!
@@ -46,63 +52,20 @@ class TaskDetailVC: UIViewController {
         
         myAlert.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { (action: UIAlertAction!) in
             
-            /* get data from server */
-            NSLog("id ==> %@", (self.taskDetail?.id)!);
-            let deleteurl = taskURL + "/" + ((self.taskDetail?.id)! as String)
-            let url:NSURL = NSURL(string: deleteurl)!
-            let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "delete"
-            request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
             
-            var reponseError: NSError?
-            var response: NSURLResponse?
+            // MARK : post request to server
             
-            var urlData: NSData?
-            do {
-                urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-            } catch let error as NSError {
-                reponseError = error
-                urlData = nil
+            self.params = ""
+            self.jsonData = self.commonMethods.sendRequest(taskURL, postString: self.params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            
+            print("JSON data returned : ", self.jsonData)
+           	if (self.jsonData.objectForKey("message") == nil) {
+                // Check if need stopActivityIndicator()
+                return
             }
             
-            if ( urlData != nil ) {
-                let res = response as! NSHTTPURLResponse!;
-                
-                if(res == nil){
-                    NSLog("No Response!");
-                }
-                
-                let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        if (success == "OK!") {
-                            
-                            self.navigationController!.popToRootViewControllerAnimated(true)
-                        }
-                        
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                if let error = reponseError {
-                    myAlert.message = (error.localizedDescription)
-                }
-                
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-
+            self.navigationController!.popToRootViewControllerAnimated(true)
+            
         }))
         
         presentViewController(myAlert, animated: true, completion: nil)
