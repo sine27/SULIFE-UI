@@ -53,6 +53,13 @@ class ToDoListTVC: UITableViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
+        if (undoList.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
+        }
+    }
     // <<<<<
     
     // reload data in table
@@ -78,7 +85,7 @@ class ToDoListTVC: UITableViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         
@@ -89,10 +96,6 @@ class ToDoListTVC: UITableViewController {
             }
         }
         self.tableView.reloadData()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
     }
     
     override func viewDidLoad() {
@@ -186,6 +189,8 @@ class ToDoListTVC: UITableViewController {
             self.markIndexPath = indexPath
             
             let taskToMark = self.undoList[indexPath.row]
+            
+            self.activityIndicator()
             self.markDone(taskToMark)
             NSLog("%@",self.undoList)
         }
@@ -258,7 +263,7 @@ class ToDoListTVC: UITableViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
     }

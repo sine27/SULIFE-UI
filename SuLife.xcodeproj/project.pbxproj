@@ -43,6 +43,7 @@
 		25AFD9F31C03EFC4000FDCFD /* AllTaskTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFD9F21C03EFC4000FDCFD /* AllTaskTVC.swift */; };
 		25AFD9F51C03F163000FDCFD /* AllDoneListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFD9F41C03F163000FDCFD /* AllDoneListTVC.swift */; };
 		25AFD9F71C041E75000FDCFD /* CommonMethodCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFD9F61C041E75000FDCFD /* CommonMethodCollection.swift */; };
+		25E083AF1C05539000C89538 /* MapDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E083AE1C05539000C89538 /* MapDetailVC.swift */; };
 		25E2B57F1BF694DE00ECD39F /* EditTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E2B57E1BF694DE00ECD39F /* EditTaskVC.swift */; };
 		25E317AE1BFFF709009D265E /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E317AD1BFFF709009D265E /* ChangePasswordVC.swift */; };
 		25E317F41C01403D009D265E /* SharedEventsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E317F31C01403D009D265E /* SharedEventsTVC.swift */; };
@@ -143,6 +144,7 @@
 		25AFD9F21C03EFC4000FDCFD /* AllTaskTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTaskTVC.swift; sourceTree = "<group>"; };
 		25AFD9F41C03F163000FDCFD /* AllDoneListTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllDoneListTVC.swift; sourceTree = "<group>"; };
 		25AFD9F61C041E75000FDCFD /* CommonMethodCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonMethodCollection.swift; sourceTree = "<group>"; };
+		25E083AE1C05539000C89538 /* MapDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailVC.swift; sourceTree = "<group>"; };
 		25E2B57E1BF694DE00ECD39F /* EditTaskVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTaskVC.swift; sourceTree = "<group>"; };
 		25E317AD1BFFF709009D265E /* ChangePasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		25E317F31C01403D009D265E /* SharedEventsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedEventsTVC.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				255635B21C01EE8F002D2BA5 /* SearchMapVC.swift */,
 				255635B41C020219002D2BA5 /* MyAnnotation.swift */,
 				25F9E9FB1C02289300A1B8C3 /* LocationModel.swift */,
+				25E083AE1C05539000C89538 /* MapDetailVC.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				25EDC7FE1BED6E930061C5B2 /* CVCalendarViewAnimatorDelegate.swift in Sources */,
 				25EDC8161BED83DB0061C5B2 /* TaskDetailVC.swift in Sources */,
 				25AFD9F71C041E75000FDCFD /* CommonMethodCollection.swift in Sources */,
+				25E083AF1C05539000C89538 /* MapDetailVC.swift in Sources */,
 				252C89A71BF667230044F1A4 /* EditEventVC.swift in Sources */,
 				25EDC7F81BED6E930061C5B2 /* CVCalendarViewAppearance.swift in Sources */,
 				25EDC7F71BED6E930061C5B2 /* CVCalendarDayViewControlCoordinator.swift in Sources */,

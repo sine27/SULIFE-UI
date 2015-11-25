@@ -52,6 +52,14 @@ class DoneListVC: UITableViewController {
         blur.removeFromSuperview()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
+        
+        if (finishedList.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "No finished task in the list currently!", sender: self)
+        }
+    }
+    
     // reload data in table
     override func viewWillAppear(animated: Bool) {
         
@@ -83,10 +91,6 @@ class DoneListVC: UITableViewController {
             }
         }
         self.tableView.reloadData()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
     }
     
     override func viewDidLoad() {
@@ -205,6 +209,5 @@ class DoneListVC: UITableViewController {
                 finishedList = []
             }
         }
-        stopActivityIndicator()
     }
 }

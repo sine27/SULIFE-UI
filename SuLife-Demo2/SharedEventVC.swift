@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class SharedEventVC: UIViewController {
     
@@ -21,9 +22,11 @@ class SharedEventVC: UIViewController {
     @IBOutlet weak var startTime: UITextView!
     @IBOutlet weak var endTime: UITextView!
     @IBOutlet weak var location: UITextView!
+    @IBOutlet weak var mapLocation: UIButton!
     
     
     var eventDetail : EventModel?
+    var eventLocation : LocationModel!
     
     var event:NSDictionary = NSDictionary()
     
@@ -42,6 +45,13 @@ class SharedEventVC: UIViewController {
         
         startTime.text = NSDateFormatter.localizedStringFromDate((eventDetail?.startTime)!, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
         endTime.text = NSDateFormatter.localizedStringFromDate((eventDetail?.endTime)!, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        
+        let lng = eventDetail!.lng
+        let lat = eventDetail!.lat
+        
+        if (lng == 0 || lat == 0) {
+            mapLocation.userInteractionEnabled = false
+        }
         
         // Do any additional setup after loading the view.
         
@@ -85,4 +95,14 @@ class SharedEventVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
+        if (segue?.identifier == "sharedEventToMap") {
+            let viewController = segue?.destinationViewController as! MapDetailVC
+            let title = eventDetail!.title
+            let lng = eventDetail!.lng
+            let lat = eventDetail!.lat
+            let loc_coords = CLLocationCoordinate2D(latitude: lat as CLLocationDegrees, longitude: lng as CLLocationDegrees)
+            viewController.eventLocation = LocationModel(placeName: title as String, coordinate: loc_coords)
+        }
+    }
 }

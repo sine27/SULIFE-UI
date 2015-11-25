@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class EventDetailVC: UIViewController {
     
@@ -15,10 +16,12 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var startTime: UITextView!
     @IBOutlet weak var endTime: UITextView!
     @IBOutlet weak var location: UITextView!
+    @IBOutlet weak var mapLocation: UIButton!
 
     @IBOutlet weak var shared: UILabel!
     
     var eventDetail : EventModel!
+    var eventLocation : LocationModel!
     
     var event:NSDictionary = NSDictionary()
     
@@ -43,6 +46,13 @@ class EventDetailVC: UIViewController {
         
         startTime.text = NSDateFormatter.localizedStringFromDate((eventDetail.startTime), dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
         endTime.text = NSDateFormatter.localizedStringFromDate((eventDetail.endTime), dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        
+        let lng = eventDetail!.lng
+        let lat = eventDetail!.lat
+        
+        if (lng == 0 || lat == 0) {
+            mapLocation.userInteractionEnabled = false
+        }
         
         // Do any additional setup after loading the view.
         
@@ -99,6 +109,14 @@ class EventDetailVC: UIViewController {
             let lat = eventDetail!.lat
             let locationName = eventDetail!.locationName
             viewController.eventDetail = EventModel(title: title, detail: detail, startTime: startTime, endTime: endTime, id: id, share: share, lng: lng, lat: lat, locationName: locationName)
+        }
+        else if (segue?.identifier == "eventToMap") {
+            let viewController = segue?.destinationViewController as! MapDetailVC
+            let title = eventDetail!.title
+            let lng = eventDetail!.lng
+            let lat = eventDetail!.lat
+            let loc_coords = CLLocationCoordinate2D(latitude: lat as CLLocationDegrees, longitude: lng as CLLocationDegrees)
+            viewController.eventLocation = LocationModel(placeName: title as String, coordinate: loc_coords)
         }
     }
     

@@ -22,7 +22,7 @@ class ProfileVC: UIViewController {
     
     func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
         blur.center = self.view.center
         blur.clipsToBounds = true
@@ -50,7 +50,11 @@ class ProfileVC: UIViewController {
         activityIndicator()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    @IBAction func contactsTapped(sender: UIButton) {
+        activityIndicator()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
         stopActivityIndicator()
     }
     

@@ -53,13 +53,18 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
     
     // <<<<<
     override func viewDidAppear(animated: Bool) {
-        spinner.stopAnimating()
-        blur.removeFromSuperview()
-        spinner.removeFromSuperview()
+        stopActivityIndicator()
+        if (contacts.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "No contact in the list!", sender: self)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        contactList.delegate = self
+        contactList.dataSource = self
+        contactList.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -76,7 +81,7 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         

@@ -55,6 +55,9 @@ class SharedEventsTVC: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
+        if (resArray.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "Does not have shared events!", sender: self)
+        }
     }
     
     // reload data in table
@@ -87,10 +90,6 @@ class SharedEventsTVC: UITableViewController {
         EventList.delegate = self
         EventList.dataSource = self
         EventList.delegate = self
-        
-        if (resArray.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "Does not have shared events!", sender: self)
-        }
     }
     
     override func didReceiveMemoryWarning() {

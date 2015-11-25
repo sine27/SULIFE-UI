@@ -56,6 +56,9 @@ class AllTaskTVC: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
+        if (undoList.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list!", sender: self)
+        }
     }
     
     // reload data in table
@@ -224,7 +227,6 @@ class AllTaskTVC: UITableViewController {
                 vc.taskDetail = TaskModel(title: title, detail: detail, time: commonMethods.dateFromString(taskTime), finish: finish, id: id)
             }
         }
-        stopActivityIndicator()
     }
     
     func markDone (task : NSDictionary) {
