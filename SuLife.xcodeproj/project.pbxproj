@@ -21,7 +21,6 @@
 		255723241BED079500A57F58 /* SuLife_Demo2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255723231BED079500A57F58 /* SuLife_Demo2Tests.swift */; };
 		2557232F1BED079500A57F58 /* SuLife_Demo2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557232E1BED079500A57F58 /* SuLife_Demo2UITests.swift */; };
 		2557233D1BED08FC00A57F58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2557233C1BED08FC00A57F58 /* Images.xcassets */; };
-		2557233F1BED10EB00A57F58 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2557233E1BED10EB00A57F58 /* LaunchScreen.xib */; };
 		2557237C1BED304000A57F58 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557237B1BED304000A57F58 /* LoginVC.swift */; };
 		2557237E1BED309E00A57F58 /* StartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557237D1BED309E00A57F58 /* StartVC.swift */; };
 		255723801BED32F300A57F58 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557237F1BED32F300A57F58 /* RegisterVC.swift */; };
@@ -122,7 +121,6 @@
 		2557232E1BED079500A57F58 /* SuLife_Demo2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuLife_Demo2UITests.swift; sourceTree = "<group>"; };
 		255723301BED079500A57F58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2557233C1BED08FC00A57F58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		2557233E1BED10EB00A57F58 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		2557237B1BED304000A57F58 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		2557237D1BED309E00A57F58 /* StartVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartVC.swift; sourceTree = "<group>"; };
 		2557237F1BED32F300A57F58 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
@@ -237,7 +235,6 @@
 				255723101BED079400A57F58 /* ViewController.swift */,
 				2557233C1BED08FC00A57F58 /* Images.xcassets */,
 				255723121BED079400A57F58 /* Main.storyboard */,
-				2557233E1BED10EB00A57F58 /* LaunchScreen.xib */,
 				2557231A1BED079500A57F58 /* Info.plist */,
 				25AE4AD91BF51B3C00ACDD2B /* support file */,
 				258C984B1BF2C6A400693A60 /* User */,
@@ -493,7 +490,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2557233D1BED08FC00A57F58 /* Images.xcassets in Resources */,
-				2557233F1BED10EB00A57F58 /* LaunchScreen.xib in Resources */,
 				255723141BED079400A57F58 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
