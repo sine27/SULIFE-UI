@@ -9,6 +9,12 @@
 import UIKit
 
 class SharedEventVC: UIViewController {
+    
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
 
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var detailTextField: UITextView!
@@ -29,7 +35,6 @@ class SharedEventVC: UIViewController {
         startTime.userInteractionEnabled = false
         endTime.userInteractionEnabled = false
         location.userInteractionEnabled = false
-        
         
         titleTextField.text = eventDetail?.title as? String
         detailTextField.text = eventDetail?.detail as? String
@@ -58,82 +63,21 @@ class SharedEventVC: UIViewController {
         let startDate = dateFormatter.stringFromDate(self.eventDetail!.startTime)
         let endDate = dateFormatter.stringFromDate(self.eventDetail!.endTime)
         
-        // Post to server
-        let post:NSString = "title=\(eventTitle)&detail=\(eventDetail)&starttime=\(startDate)&endtime=\(endDate)&share=\(shareOrNot)&locationName=\(eventLocation)&lng=\(lng)&lat=\(lat)"
+        // MARK : post request to server
         
-        NSLog("PostData: %@",post);
-        
-        let url:NSURL = NSURL(string: eventURL)!
-        
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        params = "title=\(eventTitle)&detail=\(eventDetail)&starttime=\(startDate)&endtime=\(endDate)&share=\(shareOrNot)&locationName=\(eventLocation)&lng=\(lng)&lat=\(lat)"
+        jsonData = commonMethods.sendRequest(eventURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        
-                        if (success == "OK!") {
-                            NSLog("Add Event Successfully")
-                            
-                            //var eventToken = jsonResult.valueForKey("Event") as! NSString as String
-                            let myAlert = UIAlertController(title: "Add New Event Successfully!", message: "This event is in your event list!", preferredStyle: UIAlertControllerStyle.Alert)
-                            myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                                self.navigationController?.popViewControllerAnimated(true)
-                            }))
-                            self.presentViewController(myAlert, animated:true, completion:nil)
-                            
-                        } else {
-                            let myAlert = UIAlertController(title: "Add New Event Failed!", message: "Please Try Again!", preferredStyle: UIAlertControllerStyle.Alert)
-                            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                            myAlert.addAction(okAction)
-                            self.presentViewController(myAlert, animated:true, completion:nil)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Add New Event Failed!", message: "System Error!", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Add New Event Failed!", message: "Response Error!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
-        
+        let myAlert = UIAlertController(title: "Add New Event Successfully!", message: "This event is in your event list!", preferredStyle: UIAlertControllerStyle.Alert)
+        myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        self.presentViewController(myAlert, animated:true, completion:nil)
     }
     
     override func didReceiveMemoryWarning() {

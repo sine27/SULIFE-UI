@@ -28,32 +28,32 @@ class ToDoListTVC: UITableViewController {
     var searchResults : [String] = []
     var searchActive : Bool = false
     
-    // MARK : activity indicator
-    
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-    func activityIndicator(){
+    func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
-        blur.center = self.tableView.center
+        blur.center = self.view.center
         blur.clipsToBounds = true
         
         spinner.frame = CGRectMake(0, 0, 50, 50)
         spinner.hidden = false
-        spinner.center = self.tableView.center
+        spinner.center = self.view.center
         spinner.startAnimating()
         
         self.view.addSubview(blur)
         self.view.addSubview(spinner)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    func stopActivityIndicator() {
         spinner.stopAnimating()
-        blur.removeFromSuperview()
         spinner.removeFromSuperview()
+        blur.removeFromSuperview()
     }
+    // <<<<<
     
     // reload data in table
     override func viewWillAppear(animated: Bool) {
@@ -91,6 +91,9 @@ class ToDoListTVC: UITableViewController {
         self.tableView.reloadData()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -26,31 +26,30 @@ class DoneListVC: UITableViewController {
     var searchResults : [String] = []
     var searchActive : Bool = false
     
-    // MARK : activity indicator
-    
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-    func activityIndicator(){
+    func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
-        blur.center = self.tableView.center
+        blur.center = self.view.center
         blur.clipsToBounds = true
         
         spinner.frame = CGRectMake(0, 0, 50, 50)
         spinner.hidden = false
-        spinner.center = self.tableView.center
+        spinner.center = self.view.center
         spinner.startAnimating()
         
         self.view.addSubview(blur)
         self.view.addSubview(spinner)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    func stopActivityIndicator() {
         spinner.stopAnimating()
-        blur.removeFromSuperview()
         spinner.removeFromSuperview()
+        blur.removeFromSuperview()
     }
     
     // reload data in table
@@ -62,7 +61,7 @@ class DoneListVC: UITableViewController {
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
         
         /* parse date to proper format */
-        let sd = stringFromDate(date).componentsSeparatedByString(" ")
+        let sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
         let taskTime = sd[0] + " 00:01"
         
 
@@ -73,7 +72,7 @@ class DoneListVC: UITableViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         
@@ -84,6 +83,10 @@ class DoneListVC: UITableViewController {
             }
         }
         self.tableView.reloadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
     }
     
     override func viewDidLoad() {
@@ -197,25 +200,10 @@ class DoneListVC: UITableViewController {
                 let taskTime = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
                 NSLog("detail ==> %@", detail);
                 NSLog("tt ==> %@", tt);
-                vc.taskDetail = TaskModel(title: title, detail: detail, time: dateFromString(taskTime), finish: finish, id: id)
+                vc.taskDetail = TaskModel(title: title, detail: detail, time: commonMethods.dateFromString(taskTime), finish: finish, id: id)
                 finishedList = []
             }
         }
-        
+        stopActivityIndicator()
     }
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
-    }
-    
 }

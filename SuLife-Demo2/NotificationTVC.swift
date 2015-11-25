@@ -48,6 +48,10 @@ class NotificationTVC: UITableViewController {
         blur.removeFromSuperview()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
+    }
+    
     // <<<<<
     
     override func viewDidLoad() {

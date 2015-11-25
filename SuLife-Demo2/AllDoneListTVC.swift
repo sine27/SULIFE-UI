@@ -26,31 +26,34 @@ class AllDoneListTVC: UITableViewController {
     var searchResults : [String] = []
     var searchActive : Bool = false
     
-    // MARK : activity indicator
-    
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-    func activityIndicator(){
+    func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
-        blur.center = self.tableView.center
+        blur.center = self.view.center
         blur.clipsToBounds = true
         
         spinner.frame = CGRectMake(0, 0, 50, 50)
         spinner.hidden = false
-        spinner.center = self.tableView.center
+        spinner.center = self.view.center
         spinner.startAnimating()
         
         self.view.addSubview(blur)
         self.view.addSubview(spinner)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    func stopActivityIndicator() {
         spinner.stopAnimating()
-        blur.removeFromSuperview()
         spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
     }
     
     // reload data in table
@@ -65,7 +68,7 @@ class AllDoneListTVC: UITableViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         
@@ -187,26 +190,10 @@ class AllDoneListTVC: UITableViewController {
                 let tt = task.valueForKey("establishTime") as! NSString
                 let finish = task.objectForKey("finished") as! Bool
                 let taskTime = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
-                NSLog("detail ==> %@", detail);
-                NSLog("tt ==> %@", tt);
-                vc.taskDetail = TaskModel(title: title, detail: detail, time: dateFromString(taskTime), finish: finish, id: id)
+                vc.taskDetail = TaskModel(title: title, detail: detail, time: commonMethods.dateFromString(taskTime), finish: finish, id: id)
                 finishedList = []
             }
         }
-        
-    }
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
+        stopActivityIndicator()
     }
 }

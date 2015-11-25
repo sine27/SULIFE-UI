@@ -28,31 +28,34 @@ class AllTaskTVC: UITableViewController {
     var searchResults : [String] = []
     var searchActive : Bool = false
     
-    // MARK : activity indicator
-    
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-    func activityIndicator(){
+    func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
-        blur.center = self.tableView.center
+        blur.center = self.view.center
         blur.clipsToBounds = true
         
         spinner.frame = CGRectMake(0, 0, 50, 50)
         spinner.hidden = false
-        spinner.center = self.tableView.center
+        spinner.center = self.view.center
         spinner.startAnimating()
         
         self.view.addSubview(blur)
         self.view.addSubview(spinner)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    func stopActivityIndicator() {
         spinner.stopAnimating()
-        blur.removeFromSuperview()
         spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
     }
     
     // reload data in table
@@ -62,8 +65,6 @@ class AllTaskTVC: UITableViewController {
         
         // because I user append function, the list will be reload withour clearing
         undoList = []
-
-        
         
         // MARK : post request to server
         
@@ -72,11 +73,10 @@ class AllTaskTVC: UITableViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
-        
-        
+    
         resArray = jsonData.valueForKey("tasks") as! [NSDictionary]
         for task in resArray {
             if ((task.objectForKey("finished") as! Bool) == false) {
@@ -220,24 +220,10 @@ class AllTaskTVC: UITableViewController {
                 let tt = task.valueForKey("establishTime") as! NSString
                 let finish = task.objectForKey("finished") as! Bool
                 let taskTime = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
-                vc.taskDetail = TaskModel(title: title, detail: detail, time: dateFromString(taskTime), finish: finish, id: id)
+                vc.taskDetail = TaskModel(title: title, detail: detail, time: commonMethods.dateFromString(taskTime), finish: finish, id: id)
             }
         }
-        
-    }
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
+        stopActivityIndicator()
     }
     
     func markDone (task : NSDictionary) {
@@ -247,83 +233,14 @@ class AllTaskTVC: UITableViewController {
         let taskTime = task.valueForKey("establishTime") as! NSString
         let finished = true
         
-        let post:NSString = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
-        
-        NSLog("PostData: %@",post);
-        
         let edittaskURL = taskURL + "/" + (task.valueForKey("_id") as! String)
-        let url:NSURL = NSURL(string: edittaskURL)!
+        params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
+        jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
-        }
-        
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                self.tableView.reloadData()
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        
-                        
-                        // Ok ????????
-                        if (success != "OK!") {
-                            NSLog("Mark Task Failed")
-                            let myAlert = UIAlertController(title: "Access Failed!", message: "Please Log In Again! ", preferredStyle: UIAlertControllerStyle.Alert)
-                            
-                            myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                                myAlert .dismissViewControllerAnimated(true, completion: nil)
-                            }))
-                            presentViewController(myAlert, animated: true, completion: nil)
-                            
-                        } else {
-                            
-                            print("..........................")
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Edit task Failed!", message: "System Error!", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Edit task Failed!", message: "Response Error!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            stopActivityIndicator()
+            return
         }
     }
-
 }

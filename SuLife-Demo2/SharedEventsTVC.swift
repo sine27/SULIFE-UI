@@ -9,6 +9,12 @@
 import UIKit
 
 class SharedEventsTVC: UITableViewController {
+    
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
 
     // MARK: Properties
     
@@ -21,33 +27,35 @@ class SharedEventsTVC: UITableViewController {
     
     var contactDetail : ContactsModel?
     
-    // MARK : activity indicator
-    
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-    func activityIndicator(){
+    func activityIndicator() {
         
-        blur.frame = CGRectMake(50, 50, 100, 100)
+        blur.frame = CGRectMake(30, 30, 60, 60)
         blur.layer.cornerRadius = 10
-        blur.center = self.tableView.center
+        blur.center = self.view.center
         blur.clipsToBounds = true
         
         spinner.frame = CGRectMake(0, 0, 50, 50)
         spinner.hidden = false
-        spinner.center = self.tableView.center
+        spinner.center = self.view.center
         spinner.startAnimating()
         
         self.view.addSubview(blur)
         self.view.addSubview(spinner)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    func stopActivityIndicator() {
         spinner.stopAnimating()
-        blur.removeFromSuperview()
         spinner.removeFromSuperview()
+        blur.removeFromSuperview()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        stopActivityIndicator()
+    }
     
     // reload data in table
     override func viewWillAppear(animated: Bool) {
@@ -56,70 +64,21 @@ class SharedEventsTVC: UITableViewController {
         
         let contactID = contactDetail!.id
         
-        /* get data from server */
-        let post:NSString = "userid=\(contactID)"
-        NSLog("PostData: %@",post);
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        let url:NSURL = NSURL(string: getFriendEvents)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "post"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
+        // MARK : post request to server
         
-        var reponseError: NSError?
-        var response: NSURLResponse?
+        params = "userid=\(contactID)"
+        jsonData = commonMethods.sendRequest(getFriendEvents, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            if(res == nil){
-                NSLog("No Response!");
-            }
-            
-            let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-            
-            NSLog("Response ==> %@", responseData);
-            
-            var error: NSError?
-            
-            do {
-                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                    
-                    let success:NSString = jsonResult.valueForKey("message") as! NSString
-                    
-                    if (success != "OK! Events list followed") {
-                        NSLog("Get Event Failed")
-                    } else {
-                        resArray = jsonResult.valueForKey("Events") as! [NSDictionary]
-                    }
-                }
-            } catch {
-                print(error)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            if let error = reponseError {
-                myAlert.message = (error.localizedDescription)
-            }
-            
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+        resArray = jsonData.valueForKey("Events") as! [NSDictionary]
         
         self.tableView.reloadData()
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +87,10 @@ class SharedEventsTVC: UITableViewController {
         EventList.delegate = self
         EventList.dataSource = self
         EventList.delegate = self
+        
+        if (resArray.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "Does not have shared events!", sender: self)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -239,23 +202,9 @@ class SharedEventsTVC: UITableViewController {
                 NSLog("detail ==> %@", detail);
                 NSLog("st ==> %@", st);
                 NSLog("et ==> %@", et);
-                vc.eventDetail = EventModel(title: title, detail: detail, startTime: dateFromString(startTime), endTime: dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)            }
+                vc.eventDetail = EventModel(title: title, detail: detail, startTime: commonMethods.dateFromString(startTime), endTime: commonMethods.dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)
+            }
         }
+        stopActivityIndicator()
     }
-    
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
-    }
-
 }

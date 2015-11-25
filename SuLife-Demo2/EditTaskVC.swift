@@ -28,6 +28,37 @@ class EditTaskVC: UIViewController {
     var taskTime : NSString = ""
     
     var taskDetail : TaskModel?
+    
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        stopActivityIndicator()
+    }
+    // <<<<<
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +129,7 @@ class EditTaskVC: UIViewController {
             return
         }
 
+        activityIndicator()
         
         // Get date from input and convert format
         let dateFormatter = NSDateFormatter()
@@ -112,15 +144,10 @@ class EditTaskVC: UIViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         
         self.navigationController!.popToRootViewControllerAnimated(true)
-    }
-    
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        titleTextField.resignFirstResponder();
-        detailTextField.resignFirstResponder();
     }
 }
