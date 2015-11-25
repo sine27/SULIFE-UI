@@ -109,8 +109,6 @@ class NewEventVC: UIViewController, UIScrollViewDelegate {
     }
     
     func addAction () {
-        // TODO SERVER
-        
         // Get title and detail from input
         let eventTitle = titleTextField.text!
         let eventDetail = detailTextField.text!
@@ -145,7 +143,7 @@ class NewEventVC: UIViewController, UIScrollViewDelegate {
             // Check if need stopActivityIndicator()
             return
         }
-
+        self.navigationController!.popToRootViewControllerAnimated(true)
     }
     
     @IBAction func shareEvent(sender: UISwitch) {
