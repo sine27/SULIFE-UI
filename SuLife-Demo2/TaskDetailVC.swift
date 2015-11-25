@@ -51,12 +51,11 @@ class TaskDetailVC: UIViewController {
         }))
         
         myAlert.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { (action: UIAlertAction!) in
-            
-            
+        
             // MARK : post request to server
-            
+            let deleteurl = taskURL + "/" + ((self.taskDetail?.id)! as String)
             self.params = ""
-            self.jsonData = self.commonMethods.sendRequest(taskURL, postString: self.params, postMethod: "DELETE", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            self.jsonData = self.commonMethods.sendRequest(deleteurl, postString: self.params, postMethod: "delete", postHeader: accountToken, accessString: "x-access-token", sender: self)
             
             print("JSON data returned : ", self.jsonData)
            	if (self.jsonData.objectForKey("message") == nil) {
@@ -104,8 +103,9 @@ class TaskDetailVC: UIViewController {
         
         // MARK : post request to server
         
+        let edittaskURL = taskURL + "/" + (taskDetail!.id as String)
         params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
-        jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
