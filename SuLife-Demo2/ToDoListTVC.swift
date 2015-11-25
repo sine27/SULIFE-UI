@@ -183,14 +183,7 @@ class ToDoListTVC: UITableViewController {
             
             let taskToMark = self.undoList[indexPath.row]
             self.markDone(taskToMark)
-            //self.navigationItem.rightBarButtonItem!.enabled = true
             NSLog("%@",self.undoList)
-            
-            //let cell = tableView.dequeueReusableCellWithIdentifier("taskCell", forIndexPath: indexPath) as UITableViewCell
-            
-            //if ((cell.valueForKey("title") as! String) == (self.undoList[indexPath.row].valueForKey("title") as! String)) {
-            //cell.backgroundColor = UIColor.greenColor()
-            //}
         }
         
         markDoneAction.backgroundColor = UIColor.greenColor()
@@ -255,9 +248,9 @@ class ToDoListTVC: UITableViewController {
         
         
         // MARK : post request to server
-        
+        let edittaskURL = taskURL + "/" + (task.valueForKey("_id") as! String)
         params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
-        jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {

@@ -106,9 +106,9 @@ class EditTaskVC: UIViewController {
         
         
         // MARK : post request to server
-        
+        let edittaskURL = taskURL + "/" + (taskDetail!.id as String)
         params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)"
-        jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
@@ -117,7 +117,6 @@ class EditTaskVC: UIViewController {
         }
         
         self.navigationController!.popToRootViewControllerAnimated(true)
-
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
