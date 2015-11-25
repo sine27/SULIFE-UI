@@ -60,7 +60,7 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
         
         /* parse date to proper format */
-        let sd = stringFromDate(date).componentsSeparatedByString(" ")
+        let sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
         let sdTime = sd[0] + " 00:00"
         let edTime = sd[0] + " 23:59"
         
@@ -192,23 +192,8 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
                 NSLog("detail ==> %@", detail);
                 NSLog("st ==> %@", st);
                 NSLog("et ==> %@", et);
-                vc.eventDetail = EventModel(title: title, detail: detail, startTime: dateFromString(startTime), endTime: dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)
+                vc.eventDetail = EventModel(title: title, detail: detail, startTime: commonMethods.dateFromString(startTime), endTime: commonMethods.dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)
             }
         }
-    }
-
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
     }
 }

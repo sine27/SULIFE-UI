@@ -50,73 +50,18 @@ class AllEventTVC: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         activityIndicator()
         
-        /* get selected date */
-        let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
+        jsonData = commonMethods.sendRequest(eventURL, postString: "", postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        /* parse date to proper format */
-        let sd = stringFromDate(date).componentsSeparatedByString(" ")
-        
-        /* get data from server */
-        let url:NSURL = NSURL(string: eventURL)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "get"
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            if(res == nil){
-                NSLog("No Response!");
-            }
-            
-            let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-            
-            NSLog("Response ==> %@", responseData);
-            
-            var error: NSError?
-            
-            do {
-                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                    
-                    let success:NSString = jsonResult.valueForKey("message") as! NSString
-                    
-                    // TODO : Change message if needed
-                    if (success != "OK! Events list followed") {
-                        NSLog("Get Shared Event Failed")
-                    } else {
-                        
-                        // TODO : Change key if needed
-                        resArray = jsonResult.valueForKey("Events") as! [NSDictionary]
-                    }
-                }
-            } catch {
-                print(error)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            if let error = reponseError {
-                myAlert.message = (error.localizedDescription)
-            }
-            
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+        resArray = jsonData.valueForKey("Events") as! [NSDictionary]
         
         self.tableView.reloadData()
+
     }
     
     
@@ -231,23 +176,8 @@ class AllEventTVC: UITableViewController {
                 NSLog("detail ==> %@", detail);
                 NSLog("st ==> %@", st);
                 NSLog("et ==> %@", et);
-                vc.eventDetail = EventModel(title: title, detail: detail, startTime: dateFromString(startTime), endTime: dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)
+                vc.eventDetail = EventModel(title: title, detail: detail, startTime: commonMethods.dateFromString(startTime), endTime: commonMethods.dateFromString(endTime), id: id, share: share, lng: lng, lat: lat, locationName: locationName)
             }
         }
-    }
-    
-    
-    func dateFromString (str : String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let date = dateFormatter.dateFromString(str)
-        return date!
-    }
-    
-    func stringFromDate (date : NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.stringFromDate(date)
-        return strDate
     }
 }
