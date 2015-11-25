@@ -213,77 +213,21 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
         }
     }
     
-    
-    
     func getContactsProfileInformation (contactID : NSString) -> NSDictionary {
         // MARK : get contacts profile
         
         var result = NSDictionary()
-        let postString = ""
-        let getUserInform = getUserInformation + "/" + (contactID as String)
+        let getUserInformURL = getUserInformation + "/" + (contactID as String)
+        params = ""
+        jsonData = commonMethods.sendRequest(getUserInformURL, postString: params, postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        let contactsProfileUrl:NSURL = NSURL(string: getUserInform)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: contactsProfileUrl)
-        request.HTTPMethod = "get"
-        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            stopActivityIndicator()
+            commonMethods.displayAlertMessage("System Error", userMessage: "Empty Profile!", sender: self)
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            if(res == nil){
-                NSLog("No Response!");
-            }
-            
-            let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-            
-            NSLog("Response ==> %@", responseData);
-            
-            var error: NSError?
-            
-            do {
-                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                    
-                    let success: NSString = jsonResult["message"] as! NSString
-                    NSLog(success as String)
-                    if (success != "OK! Event followed") {
-                        NSLog("Get Contacts Information Failed")
-                        
-                    } else {
-                        // Return information
-                        NSLog("SUCCESS : Contacts Information")
-                        result = jsonResult["profile"] as! NSDictionary
-                    }
-                }
-            } catch {
-                print(error)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            if let error = reponseError {
-                myAlert.message = (error.localizedDescription)
-            }
-            
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
-
-
+        result = jsonData["profile"] as! NSDictionary
         return result
     }
 }

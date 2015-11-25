@@ -10,13 +10,46 @@ import UIKit
 
 class AddContactVC: UIViewController {
 
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
+    
     // CONTACT ID
     @IBOutlet weak var ContactID: UITextField!
     
     var contactsInit : [NSDictionary] = []
     
     var myuserReturn = NSDictionary()
-    var fuckingUserID:NSString = "";
+    var fuckingUserID: NSString = "";
+    
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,168 +87,52 @@ class AddContactVC: UIViewController {
             self.presentViewController(myAlert, animated:true, completion:nil)
         }
         
-        let post:NSString = "email=\(userEmail)"
-        NSLog("PostData: %@",post);
+        activityIndicator()
         
-        let url:NSURL = NSURL(string: GetUserIDURL)!
+        // MARK : post request to server
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
+        params = "email=\(userEmail)"
+        jsonData = commonMethods.sendRequest(GetUserIDURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        var reponseError: NSError?
-        var response: NSURLResponse?
+        print("JSON data returned : ", jsonData)
         
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        if (jsonData.objectForKey("message") == nil) {
+            stopActivityIndicator()
+            return
+        }
+        if (jsonData.objectForKey("user") == nil) {
+            stopActivityIndicator()
+            commonMethods.displayAlertMessage("Input Error", userMessage: "No such user!", sender: self)
+            return
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
+        fuckingUserID = (jsonData.valueForKey("user")!.valueForKey("_id") as! NSString)
+        print("User ID : ", userInformation!.id)
+        
+        if ( fuckingUserID == userInformation!.id ) {
+            commonMethods.displayAlertMessage("Input Error", userMessage: "Don not add yourself!", sender: self)
+            stopActivityIndicator()
             
-            NSLog("Response code: %ld", res.statusCode);
+        } else if ( isFriend(fuckingUserID) == true ) {
+            commonMethods.displayAlertMessage("Input Error", userMessage: "Contact exist already!", sender: self)
+        
+        } else {
+            params = "taker=\(fuckingUserID)"
+            jsonData = commonMethods.sendRequest(addFriendURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
             
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                        
-                        let success:NSString = jsonResult.valueForKey("message") as! NSString
-                        
-                        let nullDetector: AnyObject = NSNull()
-                        if let UserSB:NSDictionary = jsonResult.objectForKey("user") as? NSDictionary {
-                            //let UserSB:NSDictionary = jsonResult.objectForKey("user") as! NSDictionary
-                            fuckingUserID = ( UserSB.valueForKey("_id") as? NSString)!
-                            NSLog("the fucking userid is: %@", fuckingUserID);
-                            if (success == "OK! User followed") {
-                                NSLog("Friend foud Successfully")
-                                
-                                
-                                if ( fuckingUserID == userInformation!.id ) {
-                                    let myAlert = UIAlertController(title: "Send Request Failed!", message: "Don not add yourself!", preferredStyle: UIAlertControllerStyle.Alert)
-                                    
-                                    let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                                    myAlert.addAction(okAction)
-                                    self.presentViewController(myAlert, animated:true, completion:nil)
-                                    return
-                                }
-                                
-                                
-                                // Mark: Check if is friend
-                                if ( isFriend(fuckingUserID) == true ) {
-                                    let myAlert = UIAlertController(title: "Send Request Failed!", message: "Is Your Firend Already!", preferredStyle: UIAlertControllerStyle.Alert)
-                                    
-                                    let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                                    myAlert.addAction(okAction)
-                                    self.presentViewController(myAlert, animated:true, completion:nil)
-                                    return
-                                }
-                                
-                                let post:NSString = "taker=\(fuckingUserID)"
-                                
-                                NSLog("PostData: %@",post);
-                                
-                                let url:NSURL = NSURL(string: addFriendURL)!
-                                
-                                let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-                                
-                                let postLength:NSString = String( postData.length )
-                                
-                                let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-                                request.HTTPMethod = "POST"
-                                request.HTTPBody = postData
-                                request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-                                
-                                var reponseError: NSError?
-                                var response: NSURLResponse?
-                                
-                                var urlData: NSData?
-                                do {
-                                    urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-                                } catch let error as NSError {
-                                    reponseError = error
-                                    urlData = nil
-                                }
-                                
-                                if ( urlData != nil ) {
-                                    let res = response as! NSHTTPURLResponse!;
-                                    
-                                    NSLog("Response code for the add friend: %ld", res.statusCode);
-                                    
-                                    if (res.statusCode >= 200 && res.statusCode < 300)
-                                    {
-                                        let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                                        
-                                        NSLog("Response ==> %@", responseData);
-                                        
-                                        var error: NSError?
-                                        
-                                        do {
-                                            if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                                                
-                                                let success:NSString = jsonResult.valueForKey("message") as! NSString
-                                                
-                                                if (success == "OK!") {
-                                                    
-                                                    let myAlert = UIAlertController(title: "Friend Request Sended!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
-                                                    
-                                                    myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
-                                                        self.navigationController?.popViewControllerAnimated(true)
-                                                    }))
-                                                    presentViewController(myAlert, animated: true, completion: nil)
-                                                }
-                                            }
-                                        } catch {
-                                            print(error)
-                                        }
-                                    }
-                                    
-                                }
-                            } else {
-                                let myAlert = UIAlertController(title: "Add New Event Failed!", message: "Please Try Again!", preferredStyle: UIAlertControllerStyle.Alert)
-                                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                                myAlert.addAction(okAction)
-                                self.presentViewController(myAlert, animated:true, completion:nil)
-                            }
-                        }
-                        else
-                        {
-                            let myAlert = UIAlertController(title: "Send Friend Request Failed!", message: "No Such User!\nPlease check User's ID!", preferredStyle: UIAlertControllerStyle.Alert)
-                            myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                            presentViewController(myAlert, animated: true, completion: nil)
-                            
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else {
-                let myAlert = UIAlertController(title: "Add New Event Failed!---002", message: "System Error!---002", preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
+            print("JSON data returned : ", jsonData)
+            if (jsonData.objectForKey("message") == nil) {
+                stopActivityIndicator()
+                return
             }
             
-        } else {
-            let myAlert = UIAlertController(title: "Add New Event Failed---003!", message: "Response Error!---003", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
+            let myAlert = UIAlertController(title: "Friend Request Sent!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
+            myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
+                self.navigationController?.popViewControllerAnimated(true)
+                self.stopActivityIndicator()
+            }))
+            presentViewController(myAlert, animated: true, completion: nil)
         }
-        
-        NSLog("the userid is: ",fuckingUserID)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -223,75 +140,26 @@ class AddContactVC: UIViewController {
     }
     
     func isFriend (currentContactID : NSString) -> Bool {
-        let url:NSURL = NSURL(string: getContactsURL)!
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
         
-        request.HTTPMethod = "get";
+        // MARK : post request to server
         
-        let postString = "";
-        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding);
-        request.setValue(accountToken, forHTTPHeaderField: "x-access-token")
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
+        params = ""
+        jsonData = commonMethods.sendRequest(getContactsURL, postString: params, postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
+
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            stopActivityIndicator()
+            return true
         }
         
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
-            
-            if(res == nil){
-                NSLog("No Response!");
-            }
-            
-            let responseData:NSString = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-            
-            NSLog("Response ==> %@", responseData);
-            
-            var error: NSError?
-            
-            do {
-                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlData!, options: []) as? NSDictionary {
-                    
-                    let success:NSString = jsonResult.valueForKey("message") as! NSString
-                    
-                    if (success != "OK! relationships followed") {
-                        NSLog("Get Contacts Failed")
-                    } else {
-                        contactsInit = jsonResult.valueForKey("relationships") as! [NSDictionary]
-                        
-                        for contact in contactsInit {
-                            let contactID = contact.valueForKey("userid2") as! NSString
-                            if (currentContactID == contactID) {
-                                return true
-                            }
-                        }
-                    }
-                }
-            } catch {
-                print(error)
-            }
-            
-        } else {
-            let myAlert = UIAlertController(title: "Connection failed!", message: "urlData Equals to NULL!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            if let error = reponseError {
-                myAlert.message = (error.localizedDescription)
-            }
-            
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
+        contactsInit = jsonData.valueForKey("relationships") as! [NSDictionary]
         
+        for contact in contactsInit {
+            let contactID = contact.valueForKey("userid2") as! NSString
+            if (currentContactID == contactID) {
+                return true
+            }
+        }
         return false
     }
-
 }

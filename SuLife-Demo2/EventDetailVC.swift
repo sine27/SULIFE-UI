@@ -40,8 +40,10 @@ class EventDetailVC: UIViewController {
         location.text = eventDetail.locationName as String
         if (eventDetail.share == true) {
             shared.text = "Yes"
+            shared.textColor = UIColor.greenColor()
         } else if (eventDetail.share == false) {
             shared.text = "No"
+            shared.textColor = UIColor.redColor()
         }
         
         startTime.text = NSDateFormatter.localizedStringFromDate((eventDetail.startTime), dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
