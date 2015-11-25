@@ -12,15 +12,86 @@ import UIKit
 var dateSelected : CVDate?
 
 
-class ViewControllerCVC: UIViewController {
+class ViewControllerCVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Properties
     @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var menuView: CVCalendarMenuView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var daysOutSwitch: UISwitch!
+    @IBOutlet weak var eventTableView: UITableView!
+    @IBOutlet weak var taskTableView: UITableView!
     
     var shouldShowDaysOut = true
     var animationFinished = true
+    
+    var resArray : [NSDictionary] = []
+    var resArray2 : [NSDictionary] = []
+    var undoList : [NSDictionary] = []
+    
+    // MARK : prepare for common methods
+    
+    let commonMethods = CommonMethodCollection()
+    var jsonData = NSDictionary()
+    var params : String = ""
+
+    
+    override func viewWillAppear(animated: Bool) {
+        // MARK : event table view
+        loadTable()
+    }
+    
+    func loadTable () {
+        /* get selected date */
+        let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
+        
+        /* parse date to proper format */
+        var sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
+        let sdTime = sd[0] + " 00:00"
+        let edTime = sd[0] + " 23:59"
+        
+        // MARK : post request to server
+        
+        params = "title=&detail=&locationName=&lng=&lat=&starttime=\(sdTime)&endtime=\(edTime)"
+        jsonData = commonMethods.sendRequest(eventByDateURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            // Check if need stopActivityIndicator()
+            return
+        }
+        
+        resArray = jsonData.valueForKey("Events") as! [NSDictionary]
+        eventTableView.reloadData()
+        
+        // MARK : task table view
+        
+        // because I user append function, the list will be reload withour clearing
+        undoList = []
+        
+        /* parse date to proper format */
+        sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
+        let taskTime = sd[0] + " 00:00"
+        
+        
+        // MARK : post request to server
+        
+        params = "title=&detail=&establishTime=\(taskTime)"
+        jsonData = commonMethods.sendRequest(taskByDateURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+        
+        print("JSON data returned : ", jsonData)
+        if (jsonData.objectForKey("message") == nil) {
+            //stopActivityIndicator()
+            return
+        }
+        
+        resArray2 = jsonData.valueForKey("Tasks") as! [NSDictionary]
+        for task in resArray2 {
+            if ((task.objectForKey("finished") as! Bool) == false) {
+                undoList.append(task)
+            }
+        }
+        taskTableView.reloadData()
+    }
     
     // MARK: - Life cycle
     
@@ -28,6 +99,49 @@ class ViewControllerCVC: UIViewController {
         super.viewDidLoad()
 
         monthLabel.text = CVDate(date: NSDate()).globalDescription
+        
+        eventTableView.delegate = self
+        eventTableView.dataSource = self
+        
+        taskTableView.delegate = self
+        taskTableView.dataSource = self
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // return number of tasks
+        if (tableView == eventTableView) {
+            return resArray.count
+        } else {
+            return undoList.count
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if (tableView == eventTableView) {
+            let cell = tableView.dequeueReusableCellWithIdentifier("miniCell", forIndexPath: indexPath) as UITableViewCell
+            var event : NSDictionary
+            event = resArray[indexPath.row] as NSDictionary
+            cell.textLabel?.text = event.valueForKey("title") as? String
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("miniCell2", forIndexPath: indexPath) as UITableViewCell
+            var task : NSDictionary
+            task = undoList[indexPath.row] as NSDictionary
+            cell.textLabel?.text = task.valueForKey("title") as? String
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (tableView == eventTableView) {
+            return "Event"
+        } else {
+            return "Todo"
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
 
     override func viewDidLayoutSubviews() {
@@ -65,8 +179,9 @@ extension ViewControllerCVC: CVCalendarViewDelegate, CVCalendarMenuViewDelegate 
     func didSelectDayView(dayView: CVCalendarDayView) {
         dateSelected = dayView.date
         print("\(calendarView.presentedDate.commonDescription) is selected!")
-        NSLog("NSdate ==> %@", (dateSelected?.convertedDate())!)
-        NSLog("date ==> %@", dateSelected!)
+        self.loadTable()
+        eventTableView.reloadData()
+        taskTableView.reloadData()
     }
     
     func presentedDateUpdated(date: CVDate) {
@@ -110,7 +225,8 @@ extension ViewControllerCVC: CVCalendarViewDelegate, CVCalendarMenuViewDelegate 
     func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool {
         return true
     }
-    
+   
+    /*
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
         let day = dayView.date.day
         let randomDay = Int(arc4random_uniform(31))
@@ -149,6 +265,7 @@ extension ViewControllerCVC: CVCalendarViewDelegate, CVCalendarMenuViewDelegate 
         return 13
     }
 
+    */
     
     func weekdaySymbolType() -> WeekdaySymbolType {
         return .Short

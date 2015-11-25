@@ -78,7 +78,7 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
 

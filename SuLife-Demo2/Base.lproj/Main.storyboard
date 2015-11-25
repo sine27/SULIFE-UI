@@ -1611,8 +1611,8 @@
                                     <outlet property="calendarDelegate" destination="NHD-Sd-M7n" id="azu-Zt-sOh"/>
                                 </connections>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xz8-Lr-4Dw">
-                                <rect key="frame" x="208" y="411" width="0.0" height="4"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xz8-Lr-4Dw">
+                                <rect key="frame" x="208" y="411" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1635,6 +1635,59 @@
                                     <action selector="toMonthView:" destination="NHD-Sd-M7n" eventType="touchUpInside" id="QGJ-Ds-aUb"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="T4g-lo-xWG">
+                                <rect key="frame" x="20" y="403" width="187" height="220"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="0.35999999999999999" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="T4g-lo-xWG" secondAttribute="height" multiplier="171:220" id="4wm-7m-zjY"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="miniCell" id="DkY-Mr-39g">
+                                        <rect key="frame" x="0.0" y="50" width="187" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DkY-Mr-39g" id="C3I-1c-SRl">
+                                            <rect key="frame" x="0.0" y="0.0" width="187" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="4wm-7m-zjY"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="dataSource" destination="NHD-Sd-M7n" id="Ifs-Ry-tzQ"/>
+                                    <outlet property="delegate" destination="NHD-Sd-M7n" id="2aP-cp-PUn"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-F9-Xqi">
+                                <rect key="frame" x="207" y="403" width="187" height="220"/>
+                                <color key="backgroundColor" red="0.19899436870000001" green="0.6515940657" blue="0.19533037" alpha="0.35000000000000003" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Xd6-F9-Xqi" secondAttribute="height" multiplier="173:128" id="icd-Dg-Xxa"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="miniCell2" id="zzK-zD-K7w">
+                                        <rect key="frame" x="0.0" y="50" width="187" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zzK-zD-K7w" id="snA-6y-nxd">
+                                            <rect key="frame" x="0.0" y="0.0" width="187" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="icd-Dg-Xxa"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="dataSource" destination="NHD-Sd-M7n" id="cW5-zv-9NB"/>
+                                    <outlet property="delegate" destination="NHD-Sd-M7n" id="U37-jc-lqi"/>
+                                </connections>
+                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iPE-xY-Uq5">
                                 <rect key="frame" x="211" y="423" width="30" height="30"/>
                                 <state key="normal" title="&gt;">
@@ -1647,17 +1700,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Xd6-F9-Xqi" firstAttribute="height" secondItem="T4g-lo-xWG" secondAttribute="height" id="0ok-cS-AZr"/>
+                            <constraint firstItem="Xd6-F9-Xqi" firstAttribute="top" secondItem="UHa-LP-FYd" secondAttribute="bottom" id="1L0-gz-xvB"/>
                             <constraint firstItem="iPE-xY-Uq5" firstAttribute="top" secondItem="Xz8-Lr-4Dw" secondAttribute="bottom" constant="8" id="2NH-RV-Kiw"/>
                             <constraint firstItem="iPE-xY-Uq5" firstAttribute="trailing" secondItem="Xz8-Lr-4Dw" secondAttribute="trailing" constant="33" id="2rr-Qn-SgR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="l5w-wf-8wt" secondAttribute="trailing" id="ARR-gA-gGQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Xd6-F9-Xqi" secondAttribute="trailing" id="BXB-3r-wya"/>
                             <constraint firstItem="S4J-TS-N3l" firstAttribute="trailing" secondItem="8Hk-5D-TMM" secondAttribute="trailingMargin" id="Fzc-BI-lD1"/>
+                            <constraint firstItem="Xd6-F9-Xqi" firstAttribute="centerY" secondItem="T4g-lo-xWG" secondAttribute="centerY" id="HzA-cS-050"/>
                             <constraint firstItem="S4J-TS-N3l" firstAttribute="top" secondItem="419-0H-xbv" secondAttribute="bottom" constant="8" symbolic="YES" id="LIC-oF-FRE"/>
+                            <constraint firstItem="7C7-G4-SU4" firstAttribute="top" secondItem="Xd6-F9-Xqi" secondAttribute="bottom" id="Qfh-5U-T5g"/>
                             <constraint firstItem="UHa-LP-FYd" firstAttribute="top" secondItem="8Hk-5D-TMM" secondAttribute="top" constant="103" id="Qpd-nn-yyJ"/>
                             <constraint firstItem="jt1-H4-olq" firstAttribute="centerX" secondItem="S4J-TS-N3l" secondAttribute="centerX" id="RbM-Cd-9UK"/>
+                            <constraint firstItem="Xd6-F9-Xqi" firstAttribute="width" secondItem="T4g-lo-xWG" secondAttribute="width" id="S94-zq-j9q"/>
+                            <constraint firstItem="T4g-lo-xWG" firstAttribute="top" secondItem="UHa-LP-FYd" secondAttribute="bottom" id="TBU-n5-gk1"/>
                             <constraint firstItem="419-0H-xbv" firstAttribute="top" secondItem="E7C-Yo-9W3" secondAttribute="bottom" constant="30" id="UpB-sV-e7H"/>
                             <constraint firstItem="Xz8-Lr-4Dw" firstAttribute="top" secondItem="UHa-LP-FYd" secondAttribute="bottom" constant="8" id="Vb1-2Y-RZm"/>
+                            <constraint firstItem="7C7-G4-SU4" firstAttribute="top" secondItem="T4g-lo-xWG" secondAttribute="bottom" id="aN1-NF-mTM"/>
+                            <constraint firstItem="T4g-lo-xWG" firstAttribute="leading" secondItem="8Hk-5D-TMM" secondAttribute="leadingMargin" id="bxE-jB-OOz"/>
                             <constraint firstItem="UHa-LP-FYd" firstAttribute="leading" secondItem="S4J-TS-N3l" secondAttribute="leading" id="eQc-qw-MT1"/>
                             <constraint firstItem="UHa-LP-FYd" firstAttribute="leading" secondItem="8Hk-5D-TMM" secondAttribute="leadingMargin" id="gRA-Eo-wsB"/>
+                            <constraint firstItem="Xd6-F9-Xqi" firstAttribute="leading" secondItem="T4g-lo-xWG" secondAttribute="trailing" id="o1A-2n-UZu"/>
                             <constraint firstItem="419-0H-xbv" firstAttribute="leading" secondItem="8Hk-5D-TMM" secondAttribute="leadingMargin" id="pCn-fF-hzO"/>
                             <constraint firstItem="iPE-xY-Uq5" firstAttribute="top" secondItem="UHa-LP-FYd" secondAttribute="bottom" constant="20" id="py3-QT-lYa"/>
                             <constraint firstItem="UHa-LP-FYd" firstAttribute="trailing" secondItem="S4J-TS-N3l" secondAttribute="trailing" id="r7I-xc-CBd"/>
@@ -1696,8 +1759,10 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="calendarView" destination="UHa-LP-FYd" id="S2i-Bf-jLu"/>
+                        <outlet property="eventTableView" destination="T4g-lo-xWG" id="7io-V1-gMy"/>
                         <outlet property="menuView" destination="S4J-TS-N3l" id="eAS-b2-b98"/>
                         <outlet property="monthLabel" destination="jt1-H4-olq" id="DTJ-Su-6UJ"/>
+                        <outlet property="taskTableView" destination="Xd6-F9-Xqi" id="vGz-uS-gHe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hds-WP-AgX" sceneMemberID="firstResponder"/>
@@ -4007,7 +4072,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="chX-aW-Pzr"/>
         <segue reference="bCD-Xk-LO4"/>
-        <segue reference="POt-Sk-UZR"/>
+        <segue reference="gNS-lP-qNY"/>
         <segue reference="9av-lq-hbp"/>
         <segue reference="XQg-Fe-3c0"/>
         <segue reference="P1a-7I-dKe"/>
