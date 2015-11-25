@@ -110,6 +110,7 @@ class DoneListVC: UITableViewController {
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
+        self.tableView.reloadData()
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
