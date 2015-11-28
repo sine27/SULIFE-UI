@@ -12,7 +12,6 @@
 		252C899F1BF5DAE60044F1A4 /* NotificationTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C899E1BF5DAE60044F1A4 /* NotificationTVC.swift */; };
 		252C89A11BF5E28B0044F1A4 /* NotificationDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C89A01BF5E28B0044F1A4 /* NotificationDetailVC.swift */; };
 		252C89A31BF5E61C0044F1A4 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C89A21BF5E61C0044F1A4 /* NotificationModel.swift */; };
-		252C89A71BF667230044F1A4 /* EditEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252C89A61BF667230044F1A4 /* EditEventVC.swift */; };
 		255635B31C01EE8F002D2BA5 /* SearchMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255635B21C01EE8F002D2BA5 /* SearchMapVC.swift */; };
 		255635B51C020219002D2BA5 /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255635B41C020219002D2BA5 /* MyAnnotation.swift */; };
 		2557230F1BED079400A57F58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557230E1BED079400A57F58 /* AppDelegate.swift */; };
@@ -34,6 +33,8 @@
 		258C984A1BF2BE6200693A60 /* ForgetPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C98491BF2BE6200693A60 /* ForgetPasswordVC.swift */; };
 		258C984D1BF2C6EF00693A60 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C984C1BF2C6EF00693A60 /* UserModel.swift */; };
 		258C984F1BF2ED3C00693A60 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258C984E1BF2ED3C00693A60 /* EditProfileVC.swift */; };
+		259CEA521C082FA3004B7293 /* NewEventTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259CEA511C082FA3004B7293 /* NewEventTVC.swift */; };
+		259CEA541C08DF5D004B7293 /* EditEventTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259CEA531C08DF5D004B7293 /* EditEventTVC.swift */; };
 		25AE4AD81BF4FB3A00ACDD2B /* NewGroupTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE4AD71BF4FB3A00ACDD2B /* NewGroupTVC.swift */; };
 		25AE4ADD1BF5525700ACDD2B /* ContactsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE4ADC1BF5525700ACDD2B /* ContactsModel.swift */; };
 		25AE4ADF1BF5535F00ACDD2B /* ContactDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AE4ADE1BF5535F00ACDD2B /* ContactDetailVC.swift */; };
@@ -75,7 +76,6 @@
 		25EDC8051BED6E930061C5B2 /* CVCalendarViewPresentationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC7EA1BED6E930061C5B2 /* CVCalendarViewPresentationMode.swift */; };
 		25EDC8061BED6E930061C5B2 /* CVWeekdaySymbolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC7EB1BED6E930061C5B2 /* CVWeekdaySymbolType.swift */; };
 		25EDC8081BED6F200061C5B2 /* ViewControllerCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC8071BED6F200061C5B2 /* ViewControllerCVC.swift */; };
-		25EDC8111BED76360061C5B2 /* NewEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC80E1BED76360061C5B2 /* NewEventVC.swift */; };
 		25EDC8121BED76360061C5B2 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC80F1BED76360061C5B2 /* EventDetailVC.swift */; };
 		25EDC8141BED83BF0061C5B2 /* NewTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC8131BED83BF0061C5B2 /* NewTaskVC.swift */; };
 		25EDC8161BED83DB0061C5B2 /* TaskDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC8151BED83DB0061C5B2 /* TaskDetailVC.swift */; };
@@ -106,7 +106,6 @@
 		252C899E1BF5DAE60044F1A4 /* NotificationTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTVC.swift; sourceTree = "<group>"; };
 		252C89A01BF5E28B0044F1A4 /* NotificationDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDetailVC.swift; sourceTree = "<group>"; };
 		252C89A21BF5E61C0044F1A4 /* NotificationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
-		252C89A61BF667230044F1A4 /* EditEventVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditEventVC.swift; sourceTree = "<group>"; };
 		255635B21C01EE8F002D2BA5 /* SearchMapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMapVC.swift; sourceTree = "<group>"; };
 		255635B41C020219002D2BA5 /* MyAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		2557230B1BED079400A57F58 /* SuLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +133,8 @@
 		258C98491BF2BE6200693A60 /* ForgetPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPasswordVC.swift; sourceTree = "<group>"; };
 		258C984C1BF2C6EF00693A60 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		258C984E1BF2ED3C00693A60 /* EditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
+		259CEA511C082FA3004B7293 /* NewEventTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEventTVC.swift; sourceTree = "<group>"; };
+		259CEA531C08DF5D004B7293 /* EditEventTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditEventTVC.swift; sourceTree = "<group>"; };
 		25AE4AD71BF4FB3A00ACDD2B /* NewGroupTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGroupTVC.swift; sourceTree = "<group>"; };
 		25AE4ADC1BF5525700ACDD2B /* ContactsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsModel.swift; sourceTree = "<group>"; };
 		25AE4ADE1BF5535F00ACDD2B /* ContactDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailVC.swift; sourceTree = "<group>"; };
@@ -175,7 +176,6 @@
 		25EDC7EA1BED6E930061C5B2 /* CVCalendarViewPresentationMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarViewPresentationMode.swift; sourceTree = "<group>"; };
 		25EDC7EB1BED6E930061C5B2 /* CVWeekdaySymbolType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVWeekdaySymbolType.swift; sourceTree = "<group>"; };
 		25EDC8071BED6F200061C5B2 /* ViewControllerCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerCVC.swift; sourceTree = "<group>"; };
-		25EDC80E1BED76360061C5B2 /* NewEventVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEventVC.swift; sourceTree = "<group>"; };
 		25EDC80F1BED76360061C5B2 /* EventDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; };
 		25EDC8131BED83BF0061C5B2 /* NewTaskVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTaskVC.swift; sourceTree = "<group>"; };
 		25EDC8151BED83DB0061C5B2 /* TaskDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailVC.swift; sourceTree = "<group>"; };
@@ -346,11 +346,11 @@
 			isa = PBXGroup;
 			children = (
 				255723891BED453200A57F58 /* EventTableVC.swift */,
-				25EDC80E1BED76360061C5B2 /* NewEventVC.swift */,
 				25EDC80F1BED76360061C5B2 /* EventDetailVC.swift */,
 				4C032F7E1BEFD3BF003D51A1 /* EventModel.swift */,
-				252C89A61BF667230044F1A4 /* EditEventVC.swift */,
 				25AFD9F01C03E552000FDCFD /* AllEventTVC.swift */,
+				259CEA511C082FA3004B7293 /* NewEventTVC.swift */,
+				259CEA531C08DF5D004B7293 /* EditEventTVC.swift */,
 			);
 			name = Event;
 			sourceTree = "<group>";
@@ -519,6 +519,7 @@
 				25EDC8051BED6E930061C5B2 /* CVCalendarViewPresentationMode.swift in Sources */,
 				25EDC7FA1BED6E930061C5B2 /* CVDate.swift in Sources */,
 				2557237C1BED304000A57F58 /* LoginVC.swift in Sources */,
+				259CEA521C082FA3004B7293 /* NewEventTVC.swift in Sources */,
 				250365ED1BFA4E8600A93155 /* ContactsActionVC.swift in Sources */,
 				25EDC7ED1BED6E930061C5B2 /* CVCalendarMonthContentViewController.swift in Sources */,
 				25EDC7F61BED6E930061C5B2 /* CVCalendarTouchController.swift in Sources */,
@@ -533,6 +534,7 @@
 				255723801BED32F300A57F58 /* RegisterVC.swift in Sources */,
 				25F9E9FC1C02289300A1B8C3 /* LocationModel.swift in Sources */,
 				25EDC7FB1BED6E930061C5B2 /* CVSet.swift in Sources */,
+				259CEA541C08DF5D004B7293 /* EditEventTVC.swift in Sources */,
 				25AE4AD81BF4FB3A00ACDD2B /* NewGroupTVC.swift in Sources */,
 				25E317F41C01403D009D265E /* SharedEventsTVC.swift in Sources */,
 				25EDC8021BED6E930061C5B2 /* CVSelectionType.swift in Sources */,
@@ -542,7 +544,6 @@
 				25EDC8161BED83DB0061C5B2 /* TaskDetailVC.swift in Sources */,
 				25AFD9F71C041E75000FDCFD /* CommonMethodCollection.swift in Sources */,
 				25E083AF1C05539000C89538 /* MapDetailVC.swift in Sources */,
-				252C89A71BF667230044F1A4 /* EditEventVC.swift in Sources */,
 				25EDC7F81BED6E930061C5B2 /* CVCalendarViewAppearance.swift in Sources */,
 				25EDC7F71BED6E930061C5B2 /* CVCalendarDayViewControlCoordinator.swift in Sources */,
 				25E317F61C01418A009D265E /* SharedEventVC.swift in Sources */,
@@ -550,7 +551,6 @@
 				25EDC7EE1BED6E930061C5B2 /* CVCalendarWeekContentViewController.swift in Sources */,
 				25EDC7F01BED6E930061C5B2 /* CVCalendarMenuView.swift in Sources */,
 				25EDC8001BED6E930061C5B2 /* CVRange.swift in Sources */,
-				25EDC8111BED76360061C5B2 /* NewEventVC.swift in Sources */,
 				25E2B57F1BF694DE00ECD39F /* EditTaskVC.swift in Sources */,
 				258C98481BF2AF0400693A60 /* TaskModel.swift in Sources */,
 				255723881BED420A00A57F58 /* GroupVC.swift in Sources */,

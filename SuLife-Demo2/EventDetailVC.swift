@@ -100,7 +100,7 @@ class EventDetailVC: UIViewController {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
         if (segue?.identifier == "eventToEditEvent") {
-            let viewController = segue?.destinationViewController as! EditEventVC
+            let viewController = segue?.destinationViewController as! EditEventTVC
             let id = eventDetail!.id
             let title = eventDetail!.title
             let detail = eventDetail!.detail

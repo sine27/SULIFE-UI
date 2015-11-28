@@ -70,7 +70,7 @@ class DoneListVC: UITableViewController {
         
         /* parse date to proper format */
         let sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
-        let taskTime = sd[0] + " 00:01"
+        let taskTime = sd[0] + " 00:00"
         
 
         // MARK : post request to server

@@ -29,7 +29,9 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
     var error:NSError!
     var pointAnnotation:MKPointAnnotation!
     var pinAnnotationView:MKPinAnnotationView!
-
+    
+    var eventLocation : LocationModel?
+    
     @IBAction func showSearchBar(sender: AnyObject) {
         self.mapView.delegate = self
         searchController = UISearchController(searchResultsController: nil)
@@ -37,6 +39,12 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
         self.searchController.searchBar.delegate = self
         presentViewController(searchController, animated: true, completion: nil)
         
+        if (eventLocation?.coordinate != nil) {
+            initialLocation = CLLocation( latitude: (eventLocation!.coordinate.latitude as CLLocationDegrees), longitude: (eventLocation!.coordinate.longitude as CLLocationDegrees))
+            
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(initialLocation.coordinate, 4000, 4000)
+            mapView.setRegion(coordinateRegion, animated: true)
+        }
     }
     
     override func viewDidLoad() {
@@ -58,7 +66,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
         let longPress = UILongPressGestureRecognizer(target: self, action: "action:")
         longPress.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(longPress)
-
+        
     }
     
     func action(gestureRecognizer:UIGestureRecognizer) {
@@ -88,7 +96,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
     //MARK: UISearchBar Delegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar){
         
-    
+        
         searchBar.resignFirstResponder()
         dismissViewControllerAnimated(true, completion: nil)
         if self.mapView.annotations.count != 0{
@@ -96,7 +104,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
                 self.mapView.removeAnnotation(annotationShouldRemove)
             }
         }
-    
+        
         localSearchRequest = MKLocalSearchRequest()
         localSearchRequest.naturalLanguageQuery = searchBar.text
         
@@ -131,8 +139,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
         
         mapView.addAnnotation(annotation)
     }
-
-
+    
     @IBAction func currentLocationTapped(sender: UIButton) {
         let location = mapView.userLocation
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -166,7 +173,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         let selectedAnnotation = view.annotation
         for annotation in mapView.annotations {
-            if let annotation = annotation as? MKAnnotation where annotation.isEqual(selectedAnnotation) {
+            if (annotation.isEqual(selectedAnnotation)) {
                 // do some actions on non-selected annotations in 'annotation' var
                 self.placeNameForEvent = annotation.title!
                 print(self.placeNameForEvent)
