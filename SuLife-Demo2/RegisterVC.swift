@@ -172,6 +172,21 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                 print("Success Message : ", jsonData.valueForKey("message"))
             }
             
+            // get user's profile
+            jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            if (jsonData.objectForKey("message") == nil) {
+                commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
+                stopActivityIndicator()
+                return
+            }
+            let jsonInform = jsonData.valueForKey("profile") as! NSDictionary
+            let firstName = jsonInform.valueForKey("firstname") as! NSString
+            let lastName = jsonInform.valueForKey("lastname") as! NSString
+            let email = jsonInform.valueForKey("email") as! NSString
+            let id = jsonInform.valueForKey("userid") as! NSString
+            
+            userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
+            
             // <<<<<
             
             // activity indicator START

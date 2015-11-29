@@ -44,20 +44,19 @@ class NotificationTVC: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
+        if (senders.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "You have no notification currently!", sender: self)
+        }
     }
     
     // <<<<<
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         stopActivityIndicator()
         notificationList.delegate = self
         notificationList.dataSource = self
-        notificationList.delegate = self
-        
-        if (senders.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "You have no notification currently!", sender: self)
-        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -74,8 +73,7 @@ class NotificationTVC: UITableViewController {
         
         params = ""
         jsonData = commonMethods.sendRequest(NotificationURL, postString: params, postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
+
         if (jsonData.objectForKey("message") == nil) {
             stopActivityIndicator()
             return
@@ -130,7 +128,8 @@ class NotificationTVC: UITableViewController {
         // Configure the cell...
         var sender : NSDictionary
         sender = senders[indexPath.row] as NSDictionary
-        let fullname = (sender.valueForKey("firstname") as? String)! + " " + (sender.valueForKey("lastname") as? String)!
+        let senderProfile = sender.valueForKey("profile") as! NSDictionary
+        let fullname = (senderProfile.valueForKey("firstname") as! String) + " " + (senderProfile.valueForKey("lastname") as! String)
         cell.textLabel?.text = fullname
         return cell
     }
@@ -146,12 +145,11 @@ class NotificationTVC: UITableViewController {
             if let index = indexPath {
                 let sender : NSDictionary = senders[index.row]
                 let relationshipID : NSString = mailids[index.row]
-                // let isFriend : Bool = solveds[index.row]
-                
-                let firstname = sender.valueForKey("firstname") as! NSString
-                let lastname = sender.valueForKey("lastname") as! NSString
-                let email = sender.valueForKey("email") as! NSString
-                let requestOwnerID = sender.valueForKey("userid") as! NSString
+                let senderProfile = sender.valueForKey("profile") as! NSDictionary
+                let firstname = senderProfile.valueForKey("firstname") as! NSString
+                let lastname = senderProfile.valueForKey("lastname") as! NSString
+                let email = senderProfile.valueForKey("email") as! NSString
+                let requestOwnerID = senderProfile.valueForKey("userid") as! NSString
 
                 vc.senderDetail = NotificationModel(firstName: firstname, lastName: lastname, email: email, requestOwnerID: requestOwnerID, relationshipID: relationshipID)
             }
@@ -167,8 +165,6 @@ class NotificationTVC: UITableViewController {
         params = ""
         let getUserInformationURL = getUserInformation + "/" + (contactID as String)
         jsonData = commonMethods.sendRequest(getUserInformationURL, postString: params, postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
         return jsonData
     }
 }

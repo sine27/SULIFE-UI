@@ -83,7 +83,17 @@ class AllDoneListTVC: UITableViewController {
         TodoList.delegate = self
         TodoList.dataSource = self
         TodoList.delegate = self
+    
+        // Tab The blank place, close keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        view.addGestureRecognizer(tap)
     }
+    
+    //Text field
+    func DismissKeyboard () {
+        view.endEditing(true)
+    }
+    // <<<<<
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

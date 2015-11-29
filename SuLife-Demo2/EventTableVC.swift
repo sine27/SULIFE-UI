@@ -79,14 +79,23 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         self.tableView.reloadData()
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //tableView.registerClass(ItemTableViewCell.self, forCellReuseIdentifier: "Cell")
     
         EventList.delegate = self
         EventList.dataSource = self
+        
+        // Tab The blank place, close keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        view.addGestureRecognizer(tap)
     }
+
+    //Text field
+    func DismissKeyboard () {
+        view.endEditing(true)
+    }
+    // <<<<<
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

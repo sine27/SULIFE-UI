@@ -59,7 +59,17 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
         contactList.delegate = self
         contactList.dataSource = self
         contactList.delegate = self
+    
+        // Tab The blank place, close keyboard
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        view.addGestureRecognizer(tap)
     }
+    
+    //Text field
+    func DismissKeyboard () {
+        view.endEditing(true)
+    }
+    // <<<<<
     
     override func viewWillAppear(animated: Bool) {
         
