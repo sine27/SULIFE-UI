@@ -39,7 +39,7 @@ let getFriendEvents = "https://damp-retreat-5682.herokuapp.com/eventf"
 var accountToken = ""
 var userInformation : UserModel?
 var jsonData = NSDictionary()
-var params : String = ""
+var params : NSString = ""
 
 // Common Methods Call
 let commonMethods = CommonMethodCollection()

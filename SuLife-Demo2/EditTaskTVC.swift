@@ -1,23 +1,19 @@
 //
-//  EditTaskVC.swift
-//  SuLife-Demo2
+//  EditTaskTVC.swift
+//  SuLife
 //
-//  Created by Sine Feng on 11/13/15.
+//  Created by Sine Feng on 11/28/15.
 //  Copyright © 2015 Sine Feng. All rights reserved.
 //
 
 import UIKit
 
-class EditTaskVC: UIViewController {
+class EditTaskTVC: UITableViewController {
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextField: UITextView!
-    
-    @IBOutlet weak var taskTimePicker: UIDatePicker!
-    
     @IBOutlet weak var timeLable: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
-    
+    @IBOutlet weak var taskTimePicker: UIDatePicker!
     var taskTime : NSString = ""
     
     var taskDetail : TaskModel?
@@ -47,26 +43,21 @@ class EditTaskVC: UIViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        stopActivityIndicator()
-    }
-    // <<<<<
 
+    // <<<<<
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         titleTextField.text = taskDetail!.title as String
         detailTextField.text = taskDetail!.detail as String
-        
         taskTimePicker.setDate(taskDetail!.taskTime, animated: true)
-        
+
         taskTimePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         
-        timeLable.text = NSDateFormatter.localizedStringFromDate((taskDetail!.taskTime), dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-
-        // Tab The blank place, close keyboard 
+        timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        
+        // Tab The blank place, close keyboard
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
         view.addGestureRecognizer(tap)
     }
@@ -74,7 +65,6 @@ class EditTaskVC: UIViewController {
     func DismissKeyboard () {
         view.endEditing(true)
     }
-    
     
     // Mark : Text field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -86,27 +76,50 @@ class EditTaskVC: UIViewController {
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if (textField == detailTextField) {
-            scrollView.setContentOffset(CGPoint(x: 0,y: 20), animated: true)
+            tableView.setContentOffset(CGPoint(x: 0,y: 20), animated: true)
         }
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
+        tableView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
     }
     // Mark : Text field END
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Table view data source
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // Return the number of sections.
+        return 3
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        if (section == 0) {
+            return 1
+        } else if (section == 1) {
+            return 3
+        }
+        return 1
+        
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    
     func datePickerValueChanged (datePicker: UIDatePicker) {
         
         timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        
     }
-
-    @IBAction func saveButtonTapped(sender: UIButton) {
+    
+    @IBAction func saveTaskTapped(sender: UIBarButtonItem) {
         saveAction()
     }
     
@@ -121,7 +134,7 @@ class EditTaskVC: UIViewController {
             self.presentViewController(myAlert, animated:true, completion:nil)
             return
         }
-
+        
         activityIndicator()
         
         // Get date from input and convert format
@@ -134,7 +147,7 @@ class EditTaskVC: UIViewController {
         let edittaskURL = taskURL + "/" + (taskDetail!.id as String)
         params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)"
         jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-
+        
         if (jsonData.objectForKey("message") == nil) {
             stopActivityIndicator()
             return

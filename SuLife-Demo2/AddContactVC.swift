@@ -10,12 +10,6 @@ import UIKit
 
 class AddContactVC: UIViewController {
 
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     // CONTACT ID
     @IBOutlet weak var ContactID: UITextField!
     

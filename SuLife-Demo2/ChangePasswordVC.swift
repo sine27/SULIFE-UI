@@ -10,12 +10,6 @@ import UIKit
 
 class ChangePasswordVC: UIViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-
     @IBOutlet weak var newPasswordTextField: UITextField!
     @IBOutlet weak var oldPasswordTextField: UITextField!
     @IBOutlet weak var repeatNewPasswordTextField: UITextField!

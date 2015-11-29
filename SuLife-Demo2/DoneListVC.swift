@@ -10,12 +10,6 @@ import UIKit
 
 class DoneListVC: UITableViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     // MARK: Properties
     
     @IBOutlet var TodoList: UITableView!
@@ -77,8 +71,7 @@ class DoneListVC: UITableViewController {
         
         params = "title=&detail=&establishTime=\(taskTime)"
         jsonData = commonMethods.sendRequest(taskByDateURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
+
         if (jsonData.objectForKey("message") == nil) {
             stopActivityIndicator()
             return

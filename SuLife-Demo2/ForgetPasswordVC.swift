@@ -9,12 +9,6 @@
 import UIKit
 
 class ForgetPasswordVC: UIViewController, UITextFieldDelegate {
-    
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
 
     @IBOutlet weak var usernameTextField: UITextField!
     

@@ -10,12 +10,6 @@ import UIKit
 
 class AllTaskTVC: UITableViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-
     // MARK: Properties
     
     @IBOutlet var TodoList: UITableView!
@@ -181,14 +175,7 @@ class AllTaskTVC: UITableViewController {
             
             let taskToMark = self.undoList[indexPath.row]
             self.markDone(taskToMark)
-            //self.navigationItem.rightBarButtonItem!.enabled = true
             NSLog("%@",self.undoList)
-            
-            //let cell = tableView.dequeueReusableCellWithIdentifier("taskCell", forIndexPath: indexPath) as UITableViewCell
-            
-            //if ((cell.valueForKey("title") as! String) == (self.undoList[indexPath.row].valueForKey("title") as! String)) {
-            //cell.backgroundColor = UIColor.greenColor()
-            //}
         }
         
         markDoneAction.backgroundColor = UIColor.greenColor()
@@ -240,7 +227,6 @@ class AllTaskTVC: UITableViewController {
         params = "title=\(title)&detail=\(detail)&establishTime=\(taskTime)&finished=\(finished)"
         jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
             stopActivityIndicator()
             return

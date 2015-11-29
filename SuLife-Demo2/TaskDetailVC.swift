@@ -10,12 +10,6 @@ import UIKit
 
 class TaskDetailVC: UIViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var detailTextField: UITextView!
     @IBOutlet weak var timeLable: UILabel!
@@ -54,11 +48,10 @@ class TaskDetailVC: UIViewController {
         
             // MARK : post request to server
             let deleteurl = taskURL + "/" + ((self.taskDetail?.id)! as String)
-            self.params = ""
-            self.jsonData = self.commonMethods.sendRequest(deleteurl, postString: self.params, postMethod: "delete", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            
-            print("JSON data returned : ", self.jsonData)
-           	if (self.jsonData.objectForKey("message") == nil) {
+            params = ""
+            jsonData = commonMethods.sendRequest(deleteurl, postString: params, postMethod: "delete", postHeader: accountToken, accessString: "x-access-token", sender: self)
+
+           	if (jsonData.objectForKey("message") == nil) {
                 // Check if need stopActivityIndicator()
                 return
             }
@@ -81,7 +74,7 @@ class TaskDetailVC: UIViewController {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
         if (segue?.identifier == "taskToEdittask") {
-            let viewController = segue?.destinationViewController as! EditTaskVC
+            let viewController = segue?.destinationViewController as! EditTaskTVC
             let id = taskDetail!.id
             let title = taskDetail!.title
             let detail = taskDetail!.detail

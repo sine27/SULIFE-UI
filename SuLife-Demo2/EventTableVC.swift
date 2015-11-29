@@ -9,13 +9,7 @@
 import UIKit
 
 class EventTableVC: UITableViewController, UISearchBarDelegate {
-    
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
+
     // MARK: Properties
     
     @IBOutlet weak var EventList: UITableView!
@@ -75,8 +69,7 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         
         params = "title=&detail=&locationName=&lng=&lat=&starttime=\(sdTime)&endtime=\(edTime)"
         jsonData = commonMethods.sendRequest(eventByDateURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
+
         if (jsonData.objectForKey("message") == nil) {
             stopActivityIndicator()
             return

@@ -10,12 +10,6 @@ import UIKit
 
 class NotificationDetailVC: UIViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-
     @IBOutlet weak var senderTextView: UITextView!
     @IBOutlet weak var senderEmailTextView: UITextView!
     @IBOutlet weak var acceptButton: UIButton!

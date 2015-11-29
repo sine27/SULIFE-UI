@@ -12,12 +12,6 @@ import MapKit
 
 class MapDetailVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate {
 
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     let locationManager = CLLocationManager()
     var initialLocation = CLLocation()
     var newCoord : CLLocationCoordinate2D!

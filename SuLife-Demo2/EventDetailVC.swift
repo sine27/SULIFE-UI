@@ -76,8 +76,7 @@ class EventDetailVC: UIViewController {
             let deleteurl = eventURL + "/" + ((self.eventDetail?.id)! as String)
             
             jsonData = commonMethods.sendRequest(deleteurl, postString: "", postMethod: "DELETE", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            
-            print("JSON data returned : ", jsonData)
+
             if (jsonData.objectForKey("message") == nil) {
                 // Check if need stopActivityIndicator()
                 return

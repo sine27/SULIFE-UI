@@ -10,12 +10,6 @@ import UIKit
 
 class ContactDetailVC: UIViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-
     @IBOutlet weak var firstNameTextView: UITextView!
     @IBOutlet weak var lastNameTextView: UITextView!
     @IBOutlet weak var emailTextView: UITextView!

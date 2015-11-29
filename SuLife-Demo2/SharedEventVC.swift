@@ -11,12 +11,6 @@ import MapKit
 
 class SharedEventVC: UIViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var detailTextField: UITextView!
     @IBOutlet weak var startTime: UITextView!

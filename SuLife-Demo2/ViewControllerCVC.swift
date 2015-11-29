@@ -233,7 +233,6 @@ extension ViewControllerCVC: CVCalendarViewDelegate, CVCalendarMenuViewDelegate 
         if day == randomDay {
             return true
         }
-        
         return false
     }
     

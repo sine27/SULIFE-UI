@@ -10,12 +10,6 @@ import UIKit
 
 class NotificationTVC: UITableViewController {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     @IBOutlet weak var notificationList: UITableView!
     
     var resArrayNotification : [NSDictionary] = []

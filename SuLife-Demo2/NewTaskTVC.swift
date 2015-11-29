@@ -1,36 +1,26 @@
+
 //
-//  NewTaskVC.swift
-//  SuLife-Demo2
+//  NewTaskTVC.swift
+//  SuLife
 //
-//  Created by Sine Feng on 11/6/15.
+//  Created by Sine Feng on 11/28/15.
 //  Copyright © 2015 Sine Feng. All rights reserved.
 //
 
 import UIKit
 
-class NewTaskVC: UIViewController {
-    
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
+class NewTaskTVC: UITableViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextField: UITextView!
-    
     @IBOutlet weak var timeLable: UILabel!
-    
     @IBOutlet weak var taskTimePicker: UIDatePicker!
-    @IBOutlet weak var scrollView: UIScrollView!
     
     var taskTime : NSString = ""
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        
+
         taskTimePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
@@ -50,41 +40,63 @@ class NewTaskVC: UIViewController {
         view.endEditing(true)
     }
     
-    
     // Mark : Text field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == self.titleTextField {
             self.detailTextField.becomeFirstResponder()
-        } 
+        }
         return true
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if (textField == detailTextField) {
-            scrollView.setContentOffset(CGPoint(x: 0,y: 20), animated: true)
+            tableView.setContentOffset(CGPoint(x: 0,y: 20), animated: true)
         }
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
+        tableView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
     }
     // Mark : Text field END
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    // MARK: - Table view data source
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // Return the number of sections.
+        return 3
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        if (section == 0) {
+            return 1
+        } else if (section == 1) {
+            return 3
+        }
+        return 1
+ 
+    }
+
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
     
     func datePickerValueChanged (datePicker: UIDatePicker) {
         
         timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-
+        
     }
     
-    @IBAction func addTaskTapped(sender: UIButton) {
+    @IBAction func addTaskTapped(sender: UIBarButtonItem) {
         addAction()
     }
-
+    
     func addAction() {
         let taskTitle = titleTextField.text!
         let taskDetail = detailTextField.text!
@@ -107,7 +119,6 @@ class NewTaskVC: UIViewController {
         params = "title=\(taskTitle)&detail=\(taskDetail)&establishTime=\(taskTime)"
         jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
-        print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
             // Check if need stopActivityIndicator()
             return

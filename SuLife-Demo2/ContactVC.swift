@@ -10,12 +10,6 @@ import UIKit
 
 class ContactVC: UITableViewController, UISearchBarDelegate {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     @IBOutlet weak var contactList: UITableView!
     @IBOutlet weak var mySearchBar: UISearchBar!
     

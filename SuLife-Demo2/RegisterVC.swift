@@ -10,12 +10,6 @@ import UIKit
 
 class RegisterVC: UIViewController, UITextFieldDelegate {
     
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
-    
     // MARK : properties
     
     @IBOutlet weak var scrollView: UIScrollView!

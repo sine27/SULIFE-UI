@@ -58,8 +58,7 @@ class AllEventTVC: UITableViewController {
         activityIndicator()
         
         jsonData = commonMethods.sendRequest(eventURL, postString: "", postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
+
         if (jsonData.objectForKey("message") == nil) {
             // Check if need stopActivityIndicator()
             return

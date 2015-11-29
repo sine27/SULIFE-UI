@@ -9,12 +9,6 @@
 import UIKit
 
 class SharedEventsTVC: UITableViewController {
-    
-    // MARK : prepare for common methods
-    
-    let commonMethods = CommonMethodCollection()
-    var jsonData = NSDictionary()
-    var params : String = ""
 
     // MARK: Properties
     
