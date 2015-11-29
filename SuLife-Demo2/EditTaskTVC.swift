@@ -22,6 +22,9 @@ class EditTaskTVC: UITableViewController {
 
     @IBAction func timeTapped(sender: UIButton) {
         timeCell.hidden = !timeCell.hidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+
     }
 
     // MARK : Activity indicator >>>>>
@@ -124,6 +127,16 @@ class EditTaskTVC: UITableViewController {
         return 0.0
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == true) {
+            return 0.0
+        } else if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == false) {
+            return 150.0
+        }
+        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+    }
+
     
     func datePickerValueChanged (datePicker: UIDatePicker) {
         

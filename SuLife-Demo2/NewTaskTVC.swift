@@ -21,6 +21,8 @@ class NewTaskTVC: UITableViewController {
     
     @IBAction func timeTapped(sender: UIButton) {
         timeCell.hidden = !timeCell.hidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 
     override func viewDidLoad() {
@@ -95,11 +97,11 @@ class NewTaskTVC: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        print("......")
+        
         if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == true) {
             return 0.0
         } else if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == false) {
-            return 100.0
+            return 150.0
         }
         return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
     }
