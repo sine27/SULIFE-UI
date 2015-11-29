@@ -182,12 +182,15 @@ class ToDoListTVC: UITableViewController {
             
             self.activityIndicator()
             self.markDone(taskToMark)
-            NSLog("%@",self.undoList)
+            NSLog("Undo List : %@",self.undoList)
+            
+            self.undoList.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
         markDoneAction.backgroundColor = UIColor.greenColor()
-        return [markDoneAction]
         
+        return [markDoneAction]
     }
     
     

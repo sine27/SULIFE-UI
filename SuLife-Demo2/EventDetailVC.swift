@@ -81,7 +81,7 @@ class EventDetailVC: UIViewController {
                 // Check if need stopActivityIndicator()
                 return
             }
-            self.navigationController!.popToRootViewControllerAnimated(true)
+            self.navigationController!.popViewControllerAnimated(true)
         }))
       
         presentViewController(myAlert, animated: true, completion: nil)

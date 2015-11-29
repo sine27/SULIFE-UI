@@ -2070,10 +2070,10 @@
                         <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
                                 <rect key="frame" x="374" y="533" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ihk-u6-RiF" secondAttribute="height" multiplier="1:1" id="1dr-ZH-eOM"/>
@@ -4262,14 +4262,14 @@
         <image name="write" width="44" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="gNS-lP-qNY"/>
         <segue reference="SV8-ti-eqk"/>
         <segue reference="oH1-Tb-0B6"/>
-        <segue reference="6wG-Wy-ccI"/>
-        <segue reference="o4o-IE-oOq"/>
         <segue reference="oEe-2u-qBY"/>
         <segue reference="DJh-xn-dYV"/>
+        <segue reference="M1S-ih-pc6"/>
         <segue reference="Bz0-1c-QKm"/>
-        <segue reference="gNS-lP-qNY"/>
-        <segue reference="XQg-Fe-3c0"/>
+        <segue reference="6wG-Wy-ccI"/>
+        <segue reference="5oU-wj-Tr2"/>
     </inferredMetricsTieBreakers>
 </document>
