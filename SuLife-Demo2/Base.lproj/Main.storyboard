@@ -1991,7 +1991,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ReZ-XJ-glS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1060" y="-2523"/>
+            <point key="canvasLocation" x="1100" y="-2017"/>
         </scene>
         <!--Events List-->
         <scene sceneID="mId-VO-tOw">
@@ -3625,7 +3625,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k57-28-SgM" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="nXa-eg-myf"/>
             </objects>
-            <point key="canvasLocation" x="1048" y="-1004"/>
+            <point key="canvasLocation" x="1100" y="-1012"/>
         </scene>
         <!--Edit Event-->
         <scene sceneID="8Oh-OA-EPN">
@@ -4264,7 +4264,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="gNS-lP-qNY"/>
         <segue reference="SV8-ti-eqk"/>
-        <segue reference="oH1-Tb-0B6"/>
+        <segue reference="bCD-Xk-LO4"/>
         <segue reference="oEe-2u-qBY"/>
         <segue reference="DJh-xn-dYV"/>
         <segue reference="M1S-ih-pc6"/>

@@ -85,6 +85,7 @@ class ToDoListTVC: UITableViewController {
                 undoList.append(task)
             }
         }
+        
         self.tableView.reloadData()
     }
     
@@ -93,7 +94,6 @@ class ToDoListTVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
-        TodoList.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
