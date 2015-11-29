@@ -183,6 +183,9 @@ class AllTaskTVC: UITableViewController {
             let taskToMark = self.undoList[indexPath.row]
             self.markDone(taskToMark)
             NSLog("%@",self.undoList)
+            
+            self.undoList.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
         markDoneAction.backgroundColor = UIColor.greenColor()
