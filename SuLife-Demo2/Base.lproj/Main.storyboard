@@ -3444,7 +3444,7 @@
                                                         <constraint firstAttribute="width" secondItem="tKy-Tp-III" secondAttribute="height" multiplier="1:1" id="cDi-jI-Pm8"/>
                                                     </constraints>
                                                     <connections>
-                                                        <segue destination="pnD-fb-Rp2" kind="show" id="Bz0-1c-QKm"/>
+                                                        <segue destination="pnD-fb-Rp2" kind="show" identifier="newToMap" id="Bz0-1c-QKm"/>
                                                     </connections>
                                                 </button>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location:" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T0d-h1-dQ7">
@@ -3771,7 +3771,7 @@
                                                         <constraint firstAttribute="width" secondItem="BUG-sQ-yRJ" secondAttribute="height" multiplier="1:1" id="FyV-6F-sfB"/>
                                                     </constraints>
                                                     <connections>
-                                                        <segue destination="pnD-fb-Rp2" kind="show" id="Lt3-U6-Wz1"/>
+                                                        <segue destination="pnD-fb-Rp2" kind="show" identifier="editToMap" id="Lt3-U6-Wz1"/>
                                                     </connections>
                                                 </button>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location:" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MB8-bB-FYe">
@@ -4365,7 +4365,7 @@
         <segue reference="JZO-J3-myd"/>
         <segue reference="PI7-CH-sHx"/>
         <segue reference="8S7-Ie-rvG"/>
+        <segue reference="Bz0-1c-QKm"/>
         <segue reference="M1S-ih-pc6"/>
-        <segue reference="Lt3-U6-Wz1"/>
     </inferredMetricsTieBreakers>
 </document>
