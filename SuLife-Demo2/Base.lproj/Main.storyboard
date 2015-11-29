@@ -1991,7 +1991,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ReZ-XJ-glS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1048" y="-1967"/>
+            <point key="canvasLocation" x="1060" y="-2523"/>
         </scene>
         <!--Events List-->
         <scene sceneID="mId-VO-tOw">
@@ -3320,7 +3320,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="blj-PG-hFr">
                                                     <rect key="frame" x="23" y="0.0" width="368" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="UYg-0D-GAq" id="t80-Vm-BKc"/>
                                                     </connections>
@@ -3353,7 +3353,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="T0d-h1-dQ7">
                                                     <rect key="frame" x="23" y="0.0" width="333" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="UYg-0D-GAq" id="HLs-il-28B"/>
                                                     </connections>
@@ -3542,7 +3542,7 @@
                                                         <constraint firstAttribute="height" constant="120" id="wJY-9o-3V1"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="UYg-0D-GAq" id="MiJ-8d-kyg"/>
                                                     </connections>
@@ -3680,7 +3680,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MB8-bB-FYe">
                                                     <rect key="frame" x="23" y="0.0" width="333" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="xZY-fa-Hb4" id="Jtf-uf-RkK"/>
                                                     </connections>
