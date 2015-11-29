@@ -60,11 +60,12 @@ class MapVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIS
         }
         
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
+        self.navigationItem.title = CVDate(date: NSDate()).commonDescription
         
         // parse date to proper format 
         
         let sd = commonMethods.stringFromDate(date).componentsSeparatedByString(" ")
-        let sdTime = sd[0] + " 00:01"
+        let sdTime = sd[0] + " 00:00"
         let edTime = sd[0] + " 23:59"
         
         // MARK : post request to server

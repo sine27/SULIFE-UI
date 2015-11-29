@@ -88,7 +88,6 @@ class AllTaskTVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
-        TodoList.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -161,8 +160,14 @@ class AllTaskTVC: UITableViewController {
         } else {
             task = undoList[indexPath.row] as NSDictionary
             cell.textLabel?.text = task.valueForKey("title") as? String
+            
+            // MARK : get HH:mm >>>>>
+            let tt = task.valueForKey("establishTime") as! NSString
+            let time = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
+            let date = commonMethods.dateFromString(time)
+            cell.detailTextLabel?.text = NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+            // <<<<<
         }
-        print("Cell Title: \(cell.textLabel?.text)")
         return cell
     }
     

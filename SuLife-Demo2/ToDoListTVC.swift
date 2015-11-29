@@ -63,6 +63,7 @@ class ToDoListTVC: UITableViewController {
         
         /* get selected date */
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
+        self.navigationItem.title = CVDate(date: NSDate()).commonDescription
         
         /* parse date to proper format */
         let sd = stringFromDate(date).componentsSeparatedByString(" ")
@@ -166,8 +167,14 @@ class ToDoListTVC: UITableViewController {
         } else {
             task = undoList[indexPath.row] as NSDictionary
             cell.textLabel?.text = task.valueForKey("title") as? String
+            
+            // MARK : get HH:mm >>>>>
+            let tt = task.valueForKey("establishTime") as! NSString
+            let time = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
+            let date = dateFromString(time)
+            cell.detailTextLabel?.text = NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+            // <<<<<
         }
-        print("Cell Title: \(cell.textLabel?.text)")
         return cell
     }
     

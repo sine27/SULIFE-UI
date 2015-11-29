@@ -145,6 +145,19 @@ class AllEventTVC: UITableViewController {
         } else {
             event = resArray[indexPath.row] as NSDictionary
             cell.textLabel?.text = event.valueForKey("title") as? String
+            
+            // MARK : get HH:mm >>>>>
+            let st = event.valueForKey("starttime") as! NSString
+            let et = event.valueForKey("endtime") as! NSString
+            let startTime = st.substringToIndex(st.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
+            let endTime = et.substringToIndex(et.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
+            let startdate = commonMethods.dateFromString(startTime)
+            let enddate = commonMethods.dateFromString(endTime)
+            
+            cell.detailTextLabel?.text = "\(NSDateFormatter.localizedStringFromDate((startdate), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle))\n\(NSDateFormatter.localizedStringFromDate((enddate), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle))"
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(12.0)
+            cell.detailTextLabel?.numberOfLines = 2
+            // <<<<<
         }
         return cell
     }
