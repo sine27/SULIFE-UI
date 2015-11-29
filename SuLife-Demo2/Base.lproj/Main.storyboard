@@ -2281,12 +2281,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="detailTextField" destination="i2z-vI-wPm" id="dMO-ZV-bAA"/>
                         <outlet property="timeLable" destination="nsD-n3-Gua" id="mLP-0B-93T"/>
@@ -3968,7 +3962,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X1x-5w-NDw">
                                                     <rect key="frame" x="23" y="0.0" width="368" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="yes" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="bcQ-3u-pfM" id="OLC-eD-x5q"/>
                                                     </connections>
@@ -3986,54 +3980,34 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Date and Time" id="ltM-2K-II3">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="EBA-U3-pDP">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" id="vna-0y-W8k">
                                         <rect key="frame" x="0.0" y="145" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EBA-U3-pDP" id="t0x-5I-NGn">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-m0-tQO">
-                                                    <rect key="frame" x="23" y="0.0" width="60" height="43"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="opq-91-sZO"/>
-                                                    </constraints>
-                                                    <state key="normal" title="On">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="IOh-m0-tQO" firstAttribute="centerY" secondItem="t0x-5I-NGn" secondAttribute="centerY" id="VIz-9q-eth"/>
-                                                <constraint firstItem="IOh-m0-tQO" firstAttribute="height" secondItem="t0x-5I-NGn" secondAttribute="height" id="aio-S9-gxC"/>
-                                                <constraint firstItem="IOh-m0-tQO" firstAttribute="leading" secondItem="t0x-5I-NGn" secondAttribute="leadingMargin" constant="15" id="cjY-GB-GGn"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vna-0y-W8k">
-                                        <rect key="frame" x="0.0" y="189" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vna-0y-W8k" id="c3x-aL-RMW">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPk-h7-Igq">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDZ-Jm-Mfr">
                                                     <rect key="frame" x="23" y="0.0" width="368" height="43"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <state key="normal" title="Time">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="timeTapped:" destination="bcQ-3u-pfM" eventType="touchUpInside" id="8mL-Nj-ydt"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="HPk-h7-Igq" secondAttribute="trailing" constant="15" id="Mfb-5N-wp8"/>
-                                                <constraint firstItem="HPk-h7-Igq" firstAttribute="height" secondItem="c3x-aL-RMW" secondAttribute="height" id="NtR-iu-6A4"/>
-                                                <constraint firstItem="HPk-h7-Igq" firstAttribute="centerY" secondItem="c3x-aL-RMW" secondAttribute="centerY" id="Sad-dl-H2L"/>
-                                                <constraint firstItem="HPk-h7-Igq" firstAttribute="leading" secondItem="c3x-aL-RMW" secondAttribute="leadingMargin" constant="15" id="a2w-Nl-SUc"/>
+                                                <constraint firstItem="XDZ-Jm-Mfr" firstAttribute="height" secondItem="c3x-aL-RMW" secondAttribute="height" id="24a-0h-5MS"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XDZ-Jm-Mfr" secondAttribute="trailing" constant="15" id="VDF-yz-rzt"/>
+                                                <constraint firstItem="XDZ-Jm-Mfr" firstAttribute="centerX" secondItem="c3x-aL-RMW" secondAttribute="centerX" id="gZs-H3-Ogu"/>
+                                                <constraint firstItem="XDZ-Jm-Mfr" firstAttribute="leading" secondItem="c3x-aL-RMW" secondAttribute="leadingMargin" constant="15" id="raa-rJ-xAP"/>
+                                                <constraint firstItem="XDZ-Jm-Mfr" firstAttribute="centerY" secondItem="c3x-aL-RMW" secondAttribute="centerY" id="xfR-7f-CLA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="dk5-93-zxL">
-                                        <rect key="frame" x="0.0" y="233" width="414" height="100"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="dk5-93-zxL" userLabel="timeCell">
+                                        <rect key="frame" x="0.0" y="189" width="414" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dk5-93-zxL" id="jdE-nO-yr4">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="99"/>
@@ -4067,7 +4041,7 @@
                             <tableViewSection headerTitle="Note" id="DZk-qX-1jG">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="120" id="8hv-en-ORu">
-                                        <rect key="frame" x="0.0" y="384" width="414" height="120"/>
+                                        <rect key="frame" x="0.0" y="340" width="414" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8hv-en-ORu" id="WIF-cP-DDh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="119"/>
@@ -4080,7 +4054,7 @@
                                                         <constraint firstAttribute="height" constant="120" id="sOe-uW-PnO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="bcQ-3u-pfM" id="3SX-3j-dP0"/>
                                                     </connections>
@@ -4112,7 +4086,8 @@
                         <outlet property="detailTextField" destination="tKR-dk-Y1s" id="VLp-3i-wTw"/>
                         <outlet property="searchDisplayController" destination="plq-Ij-OYI" id="Mn8-pt-Sbk"/>
                         <outlet property="taskTimePicker" destination="DmQ-oD-8la" id="Xup-uG-ljy"/>
-                        <outlet property="timeLable" destination="HPk-h7-Igq" id="gh5-T0-Rta"/>
+                        <outlet property="timeButton" destination="XDZ-Jm-Mfr" id="Yfd-UP-fKs"/>
+                        <outlet property="timeCell" destination="dk5-93-zxL" id="0ie-36-Z9s"/>
                         <outlet property="titleTextField" destination="X1x-5w-NDw" id="X5j-tp-rF6"/>
                     </connections>
                 </tableViewController>
@@ -4142,7 +4117,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vem-vi-slt">
                                                     <rect key="frame" x="23" y="0.0" width="368" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="yes" spellCheckingType="yes" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="cX9-BD-ViI" id="m5O-9L-uRW"/>
                                                     </connections>
@@ -4160,54 +4135,34 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Date and Time" id="J7P-ON-fbn">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="d1l-e1-SNc">
-                                        <rect key="frame" x="0.0" y="145" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d1l-e1-SNc" id="Qs2-2N-Hbg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8oV-As-n6e">
-                                                    <rect key="frame" x="23" y="0.0" width="60" height="43"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="AZH-yR-K63"/>
-                                                    </constraints>
-                                                    <state key="normal" title="On">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="8oV-As-n6e" firstAttribute="leading" secondItem="Qs2-2N-Hbg" secondAttribute="leadingMargin" constant="15" id="Gsu-ty-JaT"/>
-                                                <constraint firstItem="8oV-As-n6e" firstAttribute="height" secondItem="Qs2-2N-Hbg" secondAttribute="height" id="TmZ-Pf-SML"/>
-                                                <constraint firstItem="8oV-As-n6e" firstAttribute="centerY" secondItem="Qs2-2N-Hbg" secondAttribute="centerY" id="qdd-ET-roy"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="XYS-Yi-3WY">
-                                        <rect key="frame" x="0.0" y="189" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="145" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XYS-Yi-3WY" id="OKr-Mg-yaT">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ib-Ba-Dgj">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AOE-Zc-EjC">
                                                     <rect key="frame" x="23" y="0.0" width="368" height="43"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <state key="normal" title="Time">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="timeTapped:" destination="cX9-BD-ViI" eventType="touchUpInside" id="EZO-FS-i7Y"/>
+                                                        <action selector="timeTapped:" destination="bcQ-3u-pfM" eventType="touchUpInside" id="gwB-Xi-PVQ"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="4Ib-Ba-Dgj" firstAttribute="height" secondItem="OKr-Mg-yaT" secondAttribute="height" id="0nC-bF-sCb"/>
-                                                <constraint firstItem="4Ib-Ba-Dgj" firstAttribute="centerY" secondItem="OKr-Mg-yaT" secondAttribute="centerY" id="Opj-c9-jzR"/>
-                                                <constraint firstItem="4Ib-Ba-Dgj" firstAttribute="leading" secondItem="OKr-Mg-yaT" secondAttribute="leadingMargin" constant="15" id="Q64-9Y-tXS"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="4Ib-Ba-Dgj" secondAttribute="trailing" constant="15" id="vPb-PQ-EjD"/>
+                                                <constraint firstItem="AOE-Zc-EjC" firstAttribute="leading" secondItem="OKr-Mg-yaT" secondAttribute="leadingMargin" constant="15" id="HcN-8t-pMd"/>
+                                                <constraint firstItem="AOE-Zc-EjC" firstAttribute="centerY" secondItem="OKr-Mg-yaT" secondAttribute="centerY" id="PWs-E9-IzI"/>
+                                                <constraint firstItem="AOE-Zc-EjC" firstAttribute="height" secondItem="OKr-Mg-yaT" secondAttribute="height" id="UO7-tb-qFi"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AOE-Zc-EjC" secondAttribute="trailing" constant="15" id="cfU-O6-NGg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="ayH-MO-om0">
-                                        <rect key="frame" x="0.0" y="233" width="414" height="100"/>
+                                        <rect key="frame" x="0.0" y="189" width="414" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ayH-MO-om0" id="M66-kj-QYg">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="99"/>
@@ -4241,7 +4196,7 @@
                             <tableViewSection headerTitle="Note" id="TTG-hV-A7a">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="120" id="MAm-dG-gFK">
-                                        <rect key="frame" x="0.0" y="384" width="414" height="120"/>
+                                        <rect key="frame" x="0.0" y="340" width="414" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MAm-dG-gFK" id="Hq8-NO-i97">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="119"/>
@@ -4254,7 +4209,7 @@
                                                         <constraint firstAttribute="height" constant="120" id="zoM-Sk-7uF"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="cX9-BD-ViI" id="9hE-yy-1Sm"/>
                                                     </connections>
@@ -4285,7 +4240,8 @@
                     <connections>
                         <outlet property="detailTextField" destination="Wuw-eT-2Sh" id="1YJ-6u-ez3"/>
                         <outlet property="taskTimePicker" destination="82b-QQ-Rye" id="e8u-yZ-2cv"/>
-                        <outlet property="timeLable" destination="4Ib-Ba-Dgj" id="YnR-c4-btu"/>
+                        <outlet property="timeButton" destination="AOE-Zc-EjC" id="VPu-rZ-PmR"/>
+                        <outlet property="timeCell" destination="ayH-MO-om0" id="KoI-mk-wpT"/>
                         <outlet property="titleTextField" destination="Vem-vi-slt" id="2T5-RA-nHs"/>
                     </connections>
                 </tableViewController>

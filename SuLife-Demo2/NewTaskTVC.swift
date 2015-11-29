@@ -13,14 +13,21 @@ class NewTaskTVC: UITableViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextField: UITextView!
-    @IBOutlet weak var timeLable: UILabel!
+    @IBOutlet weak var timeButton: UIButton!
     @IBOutlet weak var taskTimePicker: UIDatePicker!
+    @IBOutlet weak var timeCell: UITableViewCell!
     
     var taskTime : NSString = ""
+    
+    @IBAction func timeTapped(sender: UIButton) {
+        timeCell.hidden = !timeCell.hidden
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        timeCell.hidden = true
+        
         taskTimePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
@@ -29,7 +36,8 @@ class NewTaskTVC: UITableViewController {
         
         taskTimePicker.setDate(date, animated: true)
         
-        timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        timeButton.setTitle((NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)), forState: UIControlState.Normal)
+
         
         // Tab The blank place, close keyboard
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
@@ -42,8 +50,8 @@ class NewTaskTVC: UITableViewController {
     
     // Mark : Text field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == self.titleTextField {
-            self.detailTextField.becomeFirstResponder()
+        if (textField == titleTextField) {
+            textField.resignFirstResponder()
         }
         return true
     }
@@ -76,7 +84,7 @@ class NewTaskTVC: UITableViewController {
         if (section == 0) {
             return 1
         } else if (section == 1) {
-            return 3
+            return 2
         }
         return 1
  
@@ -86,11 +94,19 @@ class NewTaskTVC: UITableViewController {
         return 0.0
     }
 
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        print("......")
+        if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == true) {
+            return 0.0
+        } else if (indexPath.section == 1 && indexPath.row == 1 && timeCell.hidden == false) {
+            return 100.0
+        }
+        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+    }
     
     func datePickerValueChanged (datePicker: UIDatePicker) {
         
-        timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-        
+        timeButton.setTitle((NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)), forState: UIControlState.Normal)
     }
     
     @IBAction func addTaskTapped(sender: UIBarButtonItem) {

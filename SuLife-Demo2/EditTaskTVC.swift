@@ -12,12 +12,18 @@ class EditTaskTVC: UITableViewController {
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var detailTextField: UITextView!
-    @IBOutlet weak var timeLable: UILabel!
+    @IBOutlet weak var timeButton: UIButton!
     @IBOutlet weak var taskTimePicker: UIDatePicker!
+    @IBOutlet weak var timeCell: UITableViewCell!
+    
     var taskTime : NSString = ""
     
     var taskDetail : TaskModel?
-    
+
+    @IBAction func timeTapped(sender: UIButton) {
+        timeCell.hidden = !timeCell.hidden
+    }
+
     // MARK : Activity indicator >>>>>
     private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
@@ -48,14 +54,21 @@ class EditTaskTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
 
         titleTextField.text = taskDetail!.title as String
         detailTextField.text = taskDetail!.detail as String
         taskTimePicker.setDate(taskDetail!.taskTime, animated: true)
 
         taskTimePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+
+        let timeTitle : String = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        print(timeTitle)
+        timeButton.setTitle(timeTitle, forState: .Normal)
         
-        timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        timeCell.hidden = true
         
         // Tab The blank place, close keyboard
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
@@ -68,8 +81,8 @@ class EditTaskTVC: UITableViewController {
     
     // Mark : Text field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == self.titleTextField {
-            self.detailTextField.becomeFirstResponder()
+        if (textField == titleTextField) {
+            textField.resignFirstResponder()
         }
         return true
     }
@@ -81,7 +94,7 @@ class EditTaskTVC: UITableViewController {
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        tableView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
+        tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     // Mark : Text field END
     
@@ -102,10 +115,9 @@ class EditTaskTVC: UITableViewController {
         if (section == 0) {
             return 1
         } else if (section == 1) {
-            return 3
+            return 2
         }
         return 1
-        
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -115,8 +127,7 @@ class EditTaskTVC: UITableViewController {
     
     func datePickerValueChanged (datePicker: UIDatePicker) {
         
-        timeLable.text = NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-        
+        timeButton.setTitle((NSDateFormatter.localizedStringFromDate(taskTimePicker.date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.ShortStyle)), forState: UIControlState.Normal)
     }
     
     @IBAction func saveTaskTapped(sender: UIBarButtonItem) {
