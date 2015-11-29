@@ -50,9 +50,6 @@ class ToDoListTVC: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
-        if (undoList.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
-        }
     }
     // <<<<<
     

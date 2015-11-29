@@ -47,9 +47,6 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
     
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
-        if (resArray.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
-        }
     }
     
     // reload data in table
@@ -87,7 +84,6 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
     
         EventList.delegate = self
         EventList.dataSource = self
-        EventList.delegate = self
     }
     
     override func didReceiveMemoryWarning() {

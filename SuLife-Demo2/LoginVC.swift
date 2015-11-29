@@ -51,7 +51,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     @IBOutlet var scrollView: UIScrollView!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -74,10 +74,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        stopActivityIndicator()
     }
     
     // Mark : View Setup >>>>>
@@ -132,15 +128,16 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         // fill in required fields
         if ( username.isEmpty ) {
+            stopActivityIndicator()
             commonMethods.displayAlertMessage("Login Failed!", userMessage: "Please enter Username", sender: self)
         } else if ( userPassword.isEmpty ) {
+            stopActivityIndicator()
             commonMethods.displayAlertMessage("Login Failed!", userMessage: "Please enter Password", sender: self)
         }
             
         else {
             params = "email=\(username)&password=\(userPassword)"
             jsonData = commonMethods.sendRequest(loginURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
-            print("JSON data returned : ", jsonData)
             if (jsonData.objectForKey("message") == nil) {
                 stopActivityIndicator()
                 return
@@ -153,7 +150,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             
             // get user's profile
             jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            print("JSON data returned : ", jsonData)
             if (jsonData.objectForKey("message") == nil) {
                 commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
                 stopActivityIndicator()

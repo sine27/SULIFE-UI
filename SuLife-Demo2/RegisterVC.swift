@@ -21,7 +21,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userRepeatPasswordTextField: UITextField!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {

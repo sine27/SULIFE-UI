@@ -48,10 +48,6 @@ class DoneListVC: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         stopActivityIndicator()
-        
-        if (finishedList.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No finished task in the list currently!", sender: self)
-        }
     }
     
     // reload data in table
