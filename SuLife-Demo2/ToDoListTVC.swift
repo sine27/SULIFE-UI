@@ -170,9 +170,8 @@ class ToDoListTVC: UITableViewController {
             
             // MARK : get HH:mm >>>>>
             let tt = task.valueForKey("establishTime") as! NSString
-            let time = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
-            let date = dateFromString(time)
-            cell.detailTextLabel?.text = NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+            
+            cell.detailTextLabel?.text = "\(commonMethods.getFixedDate(tt, styleType: 0))"
             // <<<<<
         }
         return cell

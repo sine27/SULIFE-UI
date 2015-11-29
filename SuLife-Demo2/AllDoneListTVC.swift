@@ -155,6 +155,14 @@ class AllDoneListTVC: UITableViewController {
         } else {
             task = finishedList[indexPath.row] as NSDictionary
             cell.textLabel?.text = task.valueForKey("title") as? String
+            
+            // MARK : get HH:mm >>>>>
+            let tt = task.valueForKey("establishTime") as! NSString
+            
+            cell.detailTextLabel?.text = "\(commonMethods.getFixedDate(tt, styleType: 1))\n\(commonMethods.getFixedDate(tt, styleType: 0))"
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(12.0)
+            cell.detailTextLabel?.numberOfLines = 2
+            // <<<<<
         }
         print("Cell Title: \(cell.textLabel?.text)")
         return cell

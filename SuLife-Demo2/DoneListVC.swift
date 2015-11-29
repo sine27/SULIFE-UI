@@ -160,6 +160,11 @@ class DoneListVC: UITableViewController {
         } else {
             task = finishedList[indexPath.row] as NSDictionary
             cell.textLabel?.text = task.valueForKey("title") as? String
+            // MARK : get HH:mm >>>>>
+            let tt = task.valueForKey("establishTime") as! NSString
+            
+            cell.detailTextLabel?.text = "\(commonMethods.getFixedDate(tt, styleType: 0))"
+            // <<<<<
         }
         print("Cell Title: \(cell.textLabel?.text)")
         return cell

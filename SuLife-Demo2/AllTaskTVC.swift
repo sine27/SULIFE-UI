@@ -163,10 +163,12 @@ class AllTaskTVC: UITableViewController {
             
             // MARK : get HH:mm >>>>>
             let tt = task.valueForKey("establishTime") as! NSString
-            let time = tt.substringToIndex(tt.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
-            let date = commonMethods.dateFromString(time)
-            cell.detailTextLabel?.text = NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+            
+            cell.detailTextLabel?.text = "\(commonMethods.getFixedDate(tt, styleType: 1))\n\(commonMethods.getFixedDate(tt, styleType: 0))"
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(12.0)
+            cell.detailTextLabel?.numberOfLines = 2
             // <<<<<
+
         }
         return cell
     }

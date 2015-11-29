@@ -138,6 +138,32 @@ public class CommonMethodCollection: NSObject {
     }
     
     // ==========================================================================================================
+    // MARK : time format
+    
+    public func getFixedDate (stringFromServer : NSString, styleType : Int) -> String {
+        let fixedString = stringFromServer.substringToIndex(stringFromServer.rangeOfString(".").location - 3).stringByReplacingOccurrencesOfString("T", withString: " ")
+        let date = self.dateFromString(fixedString)
+        
+        // Type 0 : HH:ss
+        
+        if (styleType == 0) {
+            return NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        }
+        
+        // type 1 : Nov 15, 2015
+        
+        if (styleType == 1) {
+            return NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+        }
+        
+        // type 2 : 15/11/2015 23:35
+        
+        if (styleType == 1) {
+            return NSDateFormatter.localizedStringFromDate((date), dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
+        }
+        
+        return ""
+    }
 }
 
 
