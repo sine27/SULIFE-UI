@@ -1970,7 +1970,6 @@
                         <barButtonItem key="rightBarButtonItem" image="write" id="fjq-Kg-ygk">
                             <inset key="imageInsets" minX="15" minY="10" maxX="0.0" maxY="5"/>
                             <connections>
-                                <action selector="EditEventTapped:" destination="1Gy-JQ-l53" id="JCI-N5-dNm"/>
                                 <segue destination="xZY-fa-Hb4" kind="show" identifier="eventToEditEvent" id="91d-tw-LaZ"/>
                             </connections>
                         </barButtonItem>
@@ -2118,6 +2117,7 @@
                                     <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="okTapped:" destination="pnD-fb-Rp2" eventType="touchUpInside" id="4D5-F7-oQB"/>
                                     <segue destination="idA-QA-sLD" kind="unwind" unwindAction="unwindToParent:" id="ijK-NB-zoP"/>
                                 </connections>
                             </button>
@@ -2240,7 +2240,6 @@
                                         </state>
                                         <connections>
                                             <action selector="deleteItem:" destination="Oxq-NK-Rqd" eventType="touchUpInside" id="CvQ-kr-Vxq"/>
-                                            <action selector="deleteItem:" destination="1Gy-JQ-l53" eventType="touchUpInside" id="EaM-CB-V6f"/>
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="i2z-vI-wPm">
@@ -3356,7 +3355,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vJt-7U-0xg">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
                                 <rect key="frame" x="355" y="564" width="39" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="dKr-BN-avi" secondAttribute="height" multiplier="4:5" id="T9Q-g5-MYT"/>
@@ -3505,7 +3504,6 @@
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="startTimeTapped:" destination="xZY-fa-Hb4" eventType="touchUpInside" id="NHV-JY-Wwj"/>
                                                         <action selector="startTimeTapped:" destination="UYg-0D-GAq" eventType="touchUpInside" id="nib-Ed-Jgc"/>
                                                     </connections>
                                                 </button>
@@ -3582,7 +3580,6 @@
                                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="endTimeTapped:" destination="xZY-fa-Hb4" eventType="touchUpInside" id="jVp-NH-7Ct"/>
                                                         <action selector="endTimeTapped:" destination="UYg-0D-GAq" eventType="touchUpInside" id="sjo-Bx-0q9"/>
                                                     </connections>
                                                 </button>
@@ -4237,7 +4234,6 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="timeTapped:" destination="cX9-BD-ViI" eventType="touchUpInside" id="EZO-FS-i7Y"/>
-                                                        <action selector="timeTapped:" destination="bcQ-3u-pfM" eventType="touchUpInside" id="gwB-Xi-PVQ"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -4356,14 +4352,14 @@
         <image name="write" width="44" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bCD-Xk-LO4"/>
+        <segue reference="o8E-Tn-YMt"/>
         <segue reference="gNS-lP-qNY"/>
-        <segue reference="chX-aW-Pzr"/>
-        <segue reference="5oU-wj-Tr2"/>
-        <segue reference="6wG-Wy-ccI"/>
+        <segue reference="SV8-ti-eqk"/>
+        <segue reference="oH1-Tb-0B6"/>
+        <segue reference="XQg-Fe-3c0"/>
         <segue reference="PI7-CH-sHx"/>
         <segue reference="8S7-Ie-rvG"/>
-        <segue reference="M1S-ih-pc6"/>
-        <segue reference="Lt3-U6-Wz1"/>
+        <segue reference="Bz0-1c-QKm"/>
+        <segue reference="P1a-7I-dKe"/>
     </inferredMetricsTieBreakers>
 </document>

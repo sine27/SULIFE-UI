@@ -51,7 +51,7 @@ class AllEventTVC: UITableViewController {
         jsonData = commonMethods.sendRequest(eventURL, postString: "", postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
 
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            stopActivityIndicator()
             return
         }
         
@@ -60,9 +60,6 @@ class AllEventTVC: UITableViewController {
         self.tableView.reloadData()
         
         stopActivityIndicator()
-        if (resArray.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
-        }
     }
     
     

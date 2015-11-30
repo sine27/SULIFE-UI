@@ -166,6 +166,11 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                         prefs.setObject(username, forKey: "username")
                         prefs.setInteger(1, forKey: "isUserLoggedIn")
                         prefs.synchronize()
+                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.performSegueWithIdentifier("loginToStart", sender: self)
+                            self.stopActivityIndicator()
+                        })
                     }
                     
                     // get user's profile
@@ -182,15 +187,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     let id = jsonInform.valueForKey("userid") as! NSString
                     
                     userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
-                    
                 }
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.performSegueWithIdentifier("loginToStart", sender: self)
-                    self.stopActivityIndicator()
-                })
             })
-            
         }
     }
     // Actions <<<<<

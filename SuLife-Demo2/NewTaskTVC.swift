@@ -145,7 +145,7 @@ class NewTaskTVC: UITableViewController {
             self.addAction()
             
             dispatch_async(dispatch_get_main_queue(), {
-                self.navigationController!.popToRootViewControllerAnimated(true)
+                self.navigationController!.popViewControllerAnimated(true)
                 self.stopActivityIndicator()
             })
         })

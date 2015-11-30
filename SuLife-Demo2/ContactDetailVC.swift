@@ -17,6 +17,32 @@ class ContactDetailVC: UIViewController {
     var contactDetail : ContactsModel?
     //var contact : NSDictionary = NSDictionary()
     
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -39,29 +65,38 @@ class ContactDetailVC: UIViewController {
     
     @IBAction func deleteContactTapped(sender: UIButton) {
         
-        // MARK : post request to server
+        activityIndicator()
         
-        let deleteurl = deleteContactURL + "/" + ((contactDetail?.id)! as String)
-        params = ""
-        jsonData = commonMethods.sendRequest(deleteurl, postString: params, postMethod: "DELETE", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
-        if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
-            return
-        }
-       
-        let myAlert = UIAlertController(title: "Delete Contact", message: "Are You Sure to Delete This Contact? ", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        myAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
-            myAlert .dismissViewControllerAnimated(true, completion: nil)
-        }))
-        
-        myAlert.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { (action: UIAlertAction!) in
-            self.navigationController!.popViewControllerAnimated(true)
-        }))
-        
-        presentViewController(myAlert, animated: true, completion: nil)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            // MARK : post request to server
+            
+            let deleteurl = deleteContactURL + "/" + ((self.contactDetail?.id)! as String)
+            params = ""
+            jsonData = commonMethods.sendRequest(deleteurl, postString: params, postMethod: "DELETE", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            
+            print("JSON data returned : ", jsonData)
+            if (jsonData.objectForKey("message") == nil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                
+                let myAlert = UIAlertController(title: "Delete Contact", message: "Are You Sure to Delete This Contact? ", preferredStyle: UIAlertControllerStyle.Alert)
+                myAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+                    myAlert .dismissViewControllerAnimated(true, completion: nil)
+                }))
+                myAlert.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { (action: UIAlertAction!) in
+                    self.navigationController!.popViewControllerAnimated(true)
+                }))
+                self.presentViewController(myAlert, animated: true, completion: nil)
+                
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {

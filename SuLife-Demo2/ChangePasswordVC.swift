@@ -95,6 +95,16 @@ class ChangePasswordVC: UIViewController {
             self.saveAction()
             
             dispatch_async(dispatch_get_main_queue(), {
+                
+                let myAlert = UIAlertController(title: "Change Password Successful!", message: "Please Log In Again!", preferredStyle: UIAlertControllerStyle.Alert)
+                myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isUserLoggedIn")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                    userInformation = nil
+                    self.performSegueWithIdentifier("changePasswordToLogin", sender: self)
+                }))
+                self.presentViewController(myAlert, animated: true, completion: nil)
+                
                 self.stopActivityIndicator()
             })
         })
@@ -126,14 +136,5 @@ class ChangePasswordVC: UIViewController {
             })
             return
         }
-        
-        let myAlert = UIAlertController(title: "Change Password Successful!", message: "Please Log In Again!", preferredStyle: UIAlertControllerStyle.Alert)
-        myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isUserLoggedIn")
-            NSUserDefaults.standardUserDefaults().synchronize()
-            userInformation = nil
-            self.performSegueWithIdentifier("changePasswordToLogin", sender: self)
-        }))
-        presentViewController(myAlert, animated: true, completion: nil)
     }
 }

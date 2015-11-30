@@ -107,6 +107,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func registerButtonTapped(sender: UIButton) {
         
+        sender.userInteractionEnabled = false
+        
         // store input
         let userFirstName = userFisrtNameTextField.text!
         let userLastName = userLastNameTextField.text!
@@ -199,18 +201,18 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
                 
                 // <<<<<
                 
-                // registration successful, TO: StartVC
-                
-                let myAlert = UIAlertController(title: "Registration Successful", message: "Hi \(userFirstName)!\n Welcom do SuLife!", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                    self.performSegueWithIdentifier("registerToMain", sender: self)
-                })
-                
-                myAlert.addAction(okAction)
-                self.presentViewController(myAlert, animated:true, completion:nil)
-                
                 dispatch_async(dispatch_get_main_queue(), {
+                    // registration successful, TO: StartVC
+                    
+                    let myAlert = UIAlertController(title: "Registration Successful", message: "Hi \(userFirstName)!\n Welcom do SuLife!", preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                        self.performSegueWithIdentifier("registerToMain", sender: self)
+                    })
+                    
+                    myAlert.addAction(okAction)
+                    self.presentViewController(myAlert, animated:true, completion:nil)
+                    
                     self.stopActivityIndicator()
                 })
             })

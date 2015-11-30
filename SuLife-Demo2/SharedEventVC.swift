@@ -24,6 +24,32 @@ class SharedEventVC: UIViewController {
     
     var event:NSDictionary = NSDictionary()
     
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,35 +79,47 @@ class SharedEventVC: UIViewController {
     
     
     @IBAction func joinEventTapped(sender: UIButton) {
-        // Get title and detail from input
-        let eventTitle = titleTextField.text!
-        let eventDetail = detailTextField.text!
-        let eventLocation = location.text!
-        let lng = self.eventDetail!.lng as NSNumber
-        let lat = self.eventDetail!.lat as NSNumber
-        let shareOrNot = true
         
-        // Get date from input and convert format
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let startDate = dateFormatter.stringFromDate(self.eventDetail!.startTime)
-        let endDate = dateFormatter.stringFromDate(self.eventDetail!.endTime)
+        activityIndicator()
         
-        // MARK : post request to server
-        
-        params = "title=\(eventTitle)&detail=\(eventDetail)&starttime=\(startDate)&endtime=\(endDate)&share=\(shareOrNot)&locationName=\(eventLocation)&lng=\(lng)&lat=\(lat)"
-        jsonData = commonMethods.sendRequest(eventURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        print("JSON data returned : ", jsonData)
-        if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
-            return
-        }
-        
-        let myAlert = UIAlertController(title: "Add New Event Successfully!", message: "This event is in your event list!", preferredStyle: UIAlertControllerStyle.Alert)
-        myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-            self.navigationController?.popViewControllerAnimated(true)
-        }))
-        self.presentViewController(myAlert, animated:true, completion:nil)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            // Get title and detail from input
+            let eventTitle = self.titleTextField.text!
+            let eventDetail = self.detailTextField.text!
+            let eventLocation = self.location.text!
+            let lng = self.eventDetail!.lng as NSNumber
+            let lat = self.eventDetail!.lat as NSNumber
+            let shareOrNot = true
+            
+            // Get date from input and convert format
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+            let startDate = dateFormatter.stringFromDate(self.eventDetail!.startTime)
+            let endDate = dateFormatter.stringFromDate(self.eventDetail!.endTime)
+            
+            // MARK : post request to server
+            
+            params = "title=\(eventTitle)&detail=\(eventDetail)&starttime=\(startDate)&endtime=\(endDate)&share=\(shareOrNot)&locationName=\(eventLocation)&lng=\(lng)&lat=\(lat)"
+            jsonData = commonMethods.sendRequest(eventURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            print("JSON data returned : ", jsonData)
+            if (jsonData.objectForKey("message") == nil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                
+                let myAlert = UIAlertController(title: "Add New Event Successfully!", message: "This event is in your event list!", preferredStyle: UIAlertControllerStyle.Alert)
+                myAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                    self.navigationController?.popViewControllerAnimated(true)
+                }))
+                self.presentViewController(myAlert, animated:true, completion:nil)
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     override func didReceiveMemoryWarning() {

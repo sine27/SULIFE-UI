@@ -103,15 +103,16 @@ class NotificationDetailVC: UIViewController {
                 })
                 return
             }
-            
-            let myAlert = UIAlertController(title: "Accept Request", message: "Successful!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                self.navigationController!.popViewControllerAnimated(true)
-            })
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
 
             dispatch_async(dispatch_get_main_queue(), {
+                
+                let myAlert = UIAlertController(title: "Accept Request", message: "Successful!", preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                    self.navigationController!.popViewControllerAnimated(true)
+                })
+                myAlert.addAction(okAction)
+                self.presentViewController(myAlert, animated:true, completion:nil)
+                
                 self.stopActivityIndicator()
             })
         })

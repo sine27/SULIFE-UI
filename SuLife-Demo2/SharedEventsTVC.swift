@@ -152,8 +152,16 @@ class SharedEventsTVC: UITableViewController {
         } else {
             event = resArray[indexPath.row] as NSDictionary
             cell.textLabel?.text = event.valueForKey("title") as? String
+            
+            // MARK : get HH:mm >>>>>
+            let st = event.valueForKey("starttime") as! NSString
+            // let et = event.valueForKey("endtime") as! NSString
+            
+            cell.detailTextLabel?.text = "\(commonMethods.getFixedDate(st, styleType: 1))\n\(commonMethods.getFixedDate(st, styleType: 0))"
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(12.0)
+            cell.detailTextLabel?.numberOfLines = 2
+            // <<<<<
         }
-        print("Cell Title: \(cell.textLabel?.text)")
         return cell
     }
     

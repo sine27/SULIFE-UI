@@ -18,6 +18,4 @@ class LocationModel: NSObject {
         self.placeName = placeName
         self.coordinate = coordinate
     }
-    
-    
 }

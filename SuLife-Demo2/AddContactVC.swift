@@ -72,19 +72,18 @@ class AddContactVC: UIViewController {
     
     @IBAction func sendRequestTapped(sender: UIButton) {
         
-        // TODO:
-        let userEmail = ContactID.text!
-        if (userEmail.isEmpty) {
-            let myAlert = UIAlertController(title: "Send Request Failed!", message: "Please enter the username!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
-        }
-        
         activityIndicator()
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
+            // TODO:
+            let userEmail = self.ContactID.text!
+            if (userEmail.isEmpty) {
+                commonMethods.displayAlertMessage("Send Request Failed!", userMessage: "Please enter the username!", sender: self)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+            }
             // MARK : post request to server
             
             params = "email=\(userEmail)"
@@ -135,17 +134,17 @@ class AddContactVC: UIViewController {
                     return
                 }
                 
-                let myAlert = UIAlertController(title: "Friend Request Sent!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
-                myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
-                    self.navigationController?.popViewControllerAnimated(true)
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    let myAlert = UIAlertController(title: "Friend Request Sent!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
+                    myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
+                        self.navigationController?.popViewControllerAnimated(true)
+                        self.stopActivityIndicator()
+                    }))
+                    self.presentViewController(myAlert, animated: true, completion: nil)
                     self.stopActivityIndicator()
-                }))
-                self.presentViewController(myAlert, animated: true, completion: nil)
+                })
             }
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                self.stopActivityIndicator()
-            })
         })
     }
     

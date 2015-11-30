@@ -32,6 +32,41 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
     
     var eventLocation : LocationModel?
     
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
+    @IBAction func okTapped(sender: UIButton) {
+        activityIndicator()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopActivityIndicator()
+    }
+    
     @IBAction func showSearchBar(sender: AnyObject) {
         self.mapView.delegate = self
         searchController = UISearchController(searchResultsController: nil)
@@ -151,6 +186,7 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
     }
     
     @IBAction func currentLocationTapped(sender: UIButton) {
+        
         let location = mapView.userLocation
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
