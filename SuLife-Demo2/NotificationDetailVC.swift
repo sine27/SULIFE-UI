@@ -20,7 +20,7 @@ class NotificationDetailVC: UIViewController {
     var contactVC : ContactVC!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -72,50 +72,68 @@ class NotificationDetailVC: UIViewController {
         
         activityIndicator()
         
-        if ( isFriend(senderDetail.requestOwnerID) == true ) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
-            stopActivityIndicator()
+            if ( self.isFriend(self.senderDetail.requestOwnerID) == true ) {
+                
+                self.stopActivityIndicator()
+                
+                let myAlert = UIAlertController(title: "Action Failed!", message: "Is Your Firend Already!", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                myAlert.addAction(okAction)
+                self.presentViewController(myAlert, animated:true, completion:nil)
+                self.acceptButton.userInteractionEnabled = false
+                self.rejectButton.userInteractionEnabled = false
+                self.rejectCancel()
+                return
+            }
             
-            let myAlert = UIAlertController(title: "Action Failed!", message: "Is Your Firend Already!", preferredStyle: UIAlertControllerStyle.Alert)
+            let relationshipID = self.senderDetail!.relationshipID
             
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) in
-                self.navigationController?.popViewControllerAnimated(true)
+            params = "mailid=\(relationshipID)"
+            jsonData = commonMethods.sendRequest(AcceptFriendIDURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            
+            print("JSON data returned : ", jsonData)
+            if (jsonData.objectForKey("message") == nil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+            }
+            
+            let myAlert = UIAlertController(title: "Accept Request", message: "Successful!", preferredStyle: UIAlertControllerStyle.Alert)
+            let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                self.navigationController!.popViewControllerAnimated(true)
             })
             myAlert.addAction(okAction)
             self.presentViewController(myAlert, animated:true, completion:nil)
-            acceptButton.userInteractionEnabled = false
-            rejectButton.userInteractionEnabled = false
-            rejectCancel()
-            return
-        }
-        
-        let relationshipID = senderDetail!.relationshipID
-        
-        params = "mailid=\(relationshipID)"
-        jsonData = commonMethods.sendRequest(AcceptFriendIDURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
-        if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
-            return
-        }
 
-        let myAlert = UIAlertController(title: "Accept Request", message: "Successful!", preferredStyle: UIAlertControllerStyle.Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-            self.navigationController!.popViewControllerAnimated(true)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
         })
-        myAlert.addAction(okAction)
-        self.presentViewController(myAlert, animated:true, completion:nil)
     }
     
     @IBAction func rejectButtonTapped(sender: UIButton) {
         activityIndicator()
-        rejectCancel()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            self.rejectCancel()
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.navigationController!.popViewControllerAnimated(true)
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     // prevent duplication
     func rejectCancel () {
-        
+
         // MARK : post request to server
         
         let relationshipID = senderDetail!.relationshipID
@@ -125,11 +143,11 @@ class NotificationDetailVC: UIViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
             return
         }
-        
-        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func isFriend (currentContactID : NSString) -> Bool {
