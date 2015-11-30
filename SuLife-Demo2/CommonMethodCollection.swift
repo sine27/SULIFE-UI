@@ -21,7 +21,7 @@ public class CommonMethodCollection: NSObject {
         
         // initialize request information
         let url: NSURL = NSURL(string: postURL)!
-        let request = NSMutableURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 5.0)
+        let request = NSMutableURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30.0)
         // // post without body requested
         if (postString != "") {
             let postData: NSData = postString.dataUsingEncoding(NSASCIIStringEncoding)!
