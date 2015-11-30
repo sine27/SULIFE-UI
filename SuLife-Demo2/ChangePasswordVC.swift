@@ -107,10 +107,10 @@ class ChangePasswordVC: UIViewController {
         let repeatNewPassword = repeatNewPasswordTextField.text!
         
         if (newPassword != repeatNewPassword) {
+            commonMethods.displayAlertMessage("New Password Does Not Match!", userMessage: "Please Enter the New Password Again!", sender: self)
             dispatch_async(dispatch_get_main_queue(), {
                 self.stopActivityIndicator()
             })
-            commonMethods.displayAlertMessage("New Password Does Not Match!", userMessage: "Please Enter the New Password Again!", sender: self)
             return
         }
         

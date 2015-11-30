@@ -99,10 +99,10 @@ class AddContactVC: UIViewController {
                 return
             }
             if (jsonData.objectForKey("user") == nil) {
+                commonMethods.displayAlertMessage("Input Error", userMessage: "No such user!", sender: self)
                 dispatch_async(dispatch_get_main_queue(), {
                     self.stopActivityIndicator()
                 })
-                commonMethods.displayAlertMessage("Input Error", userMessage: "No such user!", sender: self)
                 return
             }
             
@@ -117,10 +117,10 @@ class AddContactVC: UIViewController {
                 return
                 
             } else if ( self.isFriend(self.fuckingUserID) == true ) {
+                commonMethods.displayAlertMessage("Input Error", userMessage: "Contact exist already!", sender: self)
                 dispatch_async(dispatch_get_main_queue(), {
                     self.stopActivityIndicator()
                 })
-                commonMethods.displayAlertMessage("Input Error", userMessage: "Contact exist already!", sender: self)
                 return
                 
             } else {

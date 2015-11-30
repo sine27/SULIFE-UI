@@ -162,10 +162,10 @@ class EditTaskTVC: UITableViewController {
         let detail = detailTextField.text!
         
         if (title.isEmpty || detail.isEmpty) {
+            commonMethods.displayAlertMessage("Edit Task Failed!", userMessage: "All fields required!", sender: self)
             dispatch_async(dispatch_get_main_queue(), {
                 self.stopActivityIndicator()
             })
-            commonMethods.displayAlertMessage("Edit Task Failed!", userMessage: "All fields required!", sender: self)
             return
         }
 
