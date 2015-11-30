@@ -2086,10 +2086,10 @@
                         <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
                                 <rect key="frame" x="374" y="533" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ihk-u6-RiF" secondAttribute="height" multiplier="1:1" id="1dr-ZH-eOM"/>
@@ -3358,7 +3358,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vJt-7U-0xg">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
                                 <rect key="frame" x="355" y="564" width="39" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="dKr-BN-avi" secondAttribute="height" multiplier="4:5" id="T9Q-g5-MYT"/>
