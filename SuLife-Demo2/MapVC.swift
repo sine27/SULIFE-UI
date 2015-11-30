@@ -33,9 +33,37 @@ class MapVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIS
     
     var selectEvent : NSDictionary?
     
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        activityIndicator()
+        
         self.mapView.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestAlwaysAuthorization()
@@ -48,7 +76,7 @@ class MapVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIS
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewDidAppear(animated: Bool) {
         
         // TODO : event location
         /* get selected date */
@@ -85,6 +113,8 @@ class MapVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIS
                 latitude: event.valueForKey("location")!.valueForKey("coordinates")![1] as! CLLocationDegrees,
                 longitude: event.valueForKey("location")!.valueForKey("coordinates")![0] as! CLLocationDegrees)
         }
+        
+        stopActivityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

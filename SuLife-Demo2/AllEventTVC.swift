@@ -20,7 +20,7 @@ class AllEventTVC: UITableViewController {
     var searchActive : Bool = false
 
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -44,18 +44,9 @@ class AllEventTVC: UITableViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
-
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (resArray.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
-        }
-    }
     
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-        activityIndicator()
+    override func viewDidAppear(animated: Bool) {
         
         jsonData = commonMethods.sendRequest(eventURL, postString: "", postMethod: "GET", postHeader: accountToken, accessString: "x-access-token", sender: self)
 
@@ -67,17 +58,21 @@ class AllEventTVC: UITableViewController {
         resArray = jsonData.valueForKey("Events") as! [NSDictionary]
         
         self.tableView.reloadData()
-
+        
+        stopActivityIndicator()
+        if (resArray.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list currently!", sender: self)
+        }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //tableView.registerClass(ItemTableViewCell.self, forCellReuseIdentifier: "Cell")
         
         EventList.delegate = self
         EventList.dataSource = self
-        EventList.delegate = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

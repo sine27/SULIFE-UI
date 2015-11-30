@@ -21,7 +21,7 @@ class DoneListVC: UITableViewController {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -53,8 +53,6 @@ class DoneListVC: UITableViewController {
     // reload data in table
     override func viewWillAppear(animated: Bool) {
         
-        activityIndicator()
-        
         /* get selected date */
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
         
@@ -73,13 +71,14 @@ class DoneListVC: UITableViewController {
             return
         }
         
+        self.tableView.reloadData()
+        
         resArray = jsonData.valueForKey("Tasks") as! [NSDictionary]
         for task in resArray {
             if ((task.objectForKey("finished") as! Bool) == true) {
                 finishedList.append(task)
             }
         }
-        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -87,7 +86,8 @@ class DoneListVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
-        TodoList.delegate = self
+       
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

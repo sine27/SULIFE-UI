@@ -20,7 +20,7 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -45,14 +45,8 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         blur.removeFromSuperview()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-    }
-    
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-        
-        activityIndicator()
+    override func viewDidAppear(animated: Bool) {
         
         /* get selected date */
         let date : NSDate = dateSelected != nil ? (dateSelected?.convertedDate())! : NSDate()
@@ -77,6 +71,7 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
         resArray = jsonData.valueForKey("Events") as! [NSDictionary]
         
         self.tableView.reloadData()
+        stopActivityIndicator()
     }
 
     override func viewDidLoad() {
@@ -85,6 +80,8 @@ class EventTableVC: UITableViewController, UISearchBarDelegate {
     
         EventList.delegate = self
         EventList.dataSource = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

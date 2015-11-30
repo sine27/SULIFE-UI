@@ -76,6 +76,11 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         blur.removeFromSuperview()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopActivityIndicator()
+    }
+
     // Mark : View Setup >>>>>
     
     override func viewDidLoad() {
@@ -119,62 +124,73 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     // Actions >>>>>
     
-    @IBAction func loginButtonTapped(sender: AnyObject) {
-        activityIndicator()
-        
+    @IBAction func loginButtonTapped(sender: UIButton) {
         // properties
         let username = usernameTextField.text!
         let userPassword = userPasswordTextField.text!
         
+        activityIndicator()
+        
         // fill in required fields
         if ( username.isEmpty ) {
-            stopActivityIndicator()
+            self.stopActivityIndicator()
             commonMethods.displayAlertMessage("Login Failed!", userMessage: "Please enter Username", sender: self)
         } else if ( userPassword.isEmpty ) {
-            stopActivityIndicator()
+            self.stopActivityIndicator()
             commonMethods.displayAlertMessage("Login Failed!", userMessage: "Please enter Password", sender: self)
         }
-            
+        
         else {
-            params = "email=\(username)&password=\(userPassword)"
-            jsonData = commonMethods.sendRequest(loginURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
-            if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
-                return
-            }
             
-            accountToken = jsonData.valueForKey("Access_Token") as! String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                params = "email=\(username)&password=\(userPassword)"
+                jsonData = commonMethods.sendRequest(loginURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                } else {
+                    accountToken = jsonData.valueForKey("Access_Token") as! String
+                    
+                    // isUserLoggedIn
+                    
+                    let isUserLoggedIn : Bool = NSUserDefaults.standardUserDefaults().boolForKey("isUserLoggedIn")
+                    if (isUserLoggedIn) {
+                        commonMethods.displayAlertMessage("Coding Error", userMessage: "isUserLoggedIn in LoginVC", sender: self)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.stopActivityIndicator()
+                        })
+                    } else {
+                        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        prefs.setObject(username, forKey: "username")
+                        prefs.setInteger(1, forKey: "isUserLoggedIn")
+                        prefs.synchronize()
+                    }
+                    
+                    // get user's profile
+                    
+                    jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
+                    if (jsonData.objectForKey("message") == nil) {
+                        commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
+                        return
+                    }
+                    let jsonInform = jsonData.valueForKey("profile") as! NSDictionary
+                    let firstName = jsonInform.valueForKey("firstname") as! NSString
+                    let lastName = jsonInform.valueForKey("lastname") as! NSString
+                    let email = jsonInform.valueForKey("email") as! NSString
+                    let id = jsonInform.valueForKey("userid") as! NSString
+                    
+                    userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
+                    
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.performSegueWithIdentifier("loginToStart", sender: self)
+                    self.stopActivityIndicator()
+                })
+            })
             
-            print("Login SUCCESS")
-            print("accountToken : ", accountToken)
-            
-            // get user's profile
-            jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            if (jsonData.objectForKey("message") == nil) {
-                commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
-                stopActivityIndicator()
-                return
-            }
-            let jsonInform = jsonData.valueForKey("profile") as! NSDictionary
-            let firstName = jsonInform.valueForKey("firstname") as! NSString
-            let lastName = jsonInform.valueForKey("lastname") as! NSString
-            let email = jsonInform.valueForKey("email") as! NSString
-            let id = jsonInform.valueForKey("userid") as! NSString
-            
-            userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
-            
-            // isUserLoggedIn
-            let isUserLoggedIn : Bool = NSUserDefaults.standardUserDefaults().boolForKey("isUserLoggedIn")
-            if (isUserLoggedIn) {
-                stopActivityIndicator()
-                commonMethods.displayAlertMessage("Coding Error", userMessage: "isUserLoggedIn in LoginVC", sender: self)
-            } else {
-                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                prefs.setObject(username, forKey: "username")
-                prefs.setInteger(1, forKey: "isUserLoggedIn")
-                prefs.synchronize()
-                self.performSegueWithIdentifier("loginToStart", sender: self)
-            }
         }
     }
     // Actions <<<<<

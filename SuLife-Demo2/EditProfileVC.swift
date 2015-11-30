@@ -16,7 +16,7 @@ class EditProfileVC: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -100,7 +100,15 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func saveButtonTapped(sender: UIButton) {
-        saveAction()
+        activityIndicator()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.saveAction()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.navigationController!.popViewControllerAnimated(true)
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     func saveAction () {
@@ -111,9 +119,12 @@ class EditProfileVC: UIViewController {
         
         if (firstname.isEqualToString(userInformation!.firstName as String) && lastname.isEqualToString(userInformation!.lastName as String) && email.isEqualToString(userInformation!.email as String)) {
             commonMethods.displayAlertMessage("Save Failed", userMessage: "Nothing Changed!", sender: self)
-        } else {
             
-            activityIndicator()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
+            
+        } else {
             
             // MARK : post request to server
             
@@ -122,13 +133,14 @@ class EditProfileVC: UIViewController {
             
             print("JSON data returned : ", jsonData)
            	if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
                 return
             }
 
             // Upload local profile
             userInformation = UserModel(firstName: firstname, lastName: lastname, email: email, id: accountToken)
-            self.navigationController!.popViewControllerAnimated(true)
         }
     }
 }

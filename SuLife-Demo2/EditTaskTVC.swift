@@ -144,7 +144,17 @@ class EditTaskTVC: UITableViewController {
     }
     
     @IBAction func saveTaskTapped(sender: UIBarButtonItem) {
-        saveAction()
+        activityIndicator()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            self.saveAction()
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.navigationController!.popToRootViewControllerAnimated(true)
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     func saveAction () {
@@ -152,15 +162,13 @@ class EditTaskTVC: UITableViewController {
         let detail = detailTextField.text!
         
         if (title.isEmpty || detail.isEmpty) {
-            let myAlert = UIAlertController(title: "Edit Task Failed!", message: "All fields required!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
+            commonMethods.displayAlertMessage("Edit Task Failed!", userMessage: "All fields required!", sender: self)
             return
         }
-        
-        activityIndicator()
-        
+
         // Get date from input and convert format
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
@@ -173,10 +181,10 @@ class EditTaskTVC: UITableViewController {
         jsonData = commonMethods.sendRequest(edittaskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
         if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
             return
         }
-        
-        self.navigationController!.popToRootViewControllerAnimated(true)
     }
 }

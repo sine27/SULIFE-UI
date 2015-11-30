@@ -17,7 +17,7 @@ class NotificationTVC: UITableViewController {
     var mailids : [NSString] = []
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -42,27 +42,17 @@ class NotificationTVC: UITableViewController {
         blur.removeFromSuperview()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (senders.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "You have no notification currently!", sender: self)
-        }
-    }
-    
     // <<<<<
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        stopActivityIndicator()
+        activityIndicator()
         notificationList.delegate = self
         notificationList.dataSource = self
     }
 
     override func viewWillAppear(animated: Bool) {
-        
-        activityIndicator()
-        
         // initialize vars because append used
         
         senders = []
@@ -103,6 +93,11 @@ class NotificationTVC: UITableViewController {
         }
         
         self.tableView.reloadData()
+        
+        stopActivityIndicator()
+        if (senders.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "You have no notification currently!", sender: self)
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -23,7 +23,7 @@ class ToDoListTVC: UITableViewController {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -47,17 +47,10 @@ class ToDoListTVC: UITableViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-    }
     // <<<<<
     
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-        
-        activityIndicator()
-        
+    override func viewDidAppear(animated: Bool) {
         // because I user append function, the list will be reload withour clearing
         undoList = []
         
@@ -87,6 +80,7 @@ class ToDoListTVC: UITableViewController {
             }
         }
         
+        stopActivityIndicator()
         self.tableView.reloadData()
     }
     
@@ -95,6 +89,8 @@ class ToDoListTVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {
@@ -192,6 +188,7 @@ class ToDoListTVC: UITableViewController {
             
             self.undoList.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            self.stopActivityIndicator()
         }
         
         markDoneAction.backgroundColor = UIColor.greenColor()

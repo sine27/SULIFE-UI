@@ -13,7 +13,7 @@ class ForgetPasswordVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameTextField: UITextField!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -82,21 +82,29 @@ class ForgetPasswordVC: UIViewController, UITextFieldDelegate {
         
         activityIndicator()
         
-        params = "username=\(username)"
-        jsonData = commonMethods.sendRequest(forgetPasswordURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
-        
-        print("JSON data returned : ", jsonData)
-        if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
-            return
-        }
-
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            params = "username=\(username)"
+            jsonData = commonMethods.sendRequest(forgetPasswordURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
+            
+            print("JSON data returned : ", jsonData)
+            if (jsonData.objectForKey("message") == nil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
+        })
+            
         let myAlert = UIAlertController(title: "Forget Password!", message: "Password has been sent to \nyour E-mail!", preferredStyle: UIAlertControllerStyle.Alert)
-
+        
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
             self.performSegueWithIdentifier("forgetPasswordToLogin", sender: self)
         })
-        
         myAlert.addAction(okAction)
         self.presentViewController(myAlert, animated:true, completion:nil)
     }

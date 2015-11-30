@@ -129,79 +129,91 @@ class RegisterVC: UIViewController, UITextFieldDelegate {
             // Display alert message and return
             commonMethods.displayAlertMessage("Input Error", userMessage: "Password Does Not Match", sender: self)
         }
-            
+        
         else {
             
             activityIndicator()
             
-            // MARK : post request to server >>>>>
-            
-            //  register
-            
-            params = "email=\(username)&password=\(userPassword)"
-            jsonData = commonMethods.sendRequest(registerURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
-            print("JSON data returned : ", jsonData)
-            if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
-                return
-            }
-            
-            accountToken = jsonData.valueForKey("Access_Token") as! NSString as String
-            
-            // Send user's information to database
-            
-            params = "firstname=\(userFirstName)&lastname=\(userLastName)&email=\(userEmail)"
-            jsonData = commonMethods.sendRequest(profileURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            print("JSON data returned : ", jsonData)
-            if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
-                return
-            } else {
-                print("Success Message : ", jsonData.valueForKey("message"))
-            }
-            
-            // auto login
-            
-            params = "email=\(username)&password=\(userPassword)"
-            jsonData = commonMethods.sendRequest(loginURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
-            print("JSON data returned : ", jsonData)
-            if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
-                return
-            }  else {
-                print("Success Message : ", jsonData.valueForKey("message"))
-            }
-            
-            // get user's profile
-            jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
-            if (jsonData.objectForKey("message") == nil) {
-                commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
-                stopActivityIndicator()
-                return
-            }
-            let jsonInform = jsonData.valueForKey("profile") as! NSDictionary
-            let firstName = jsonInform.valueForKey("firstname") as! NSString
-            let lastName = jsonInform.valueForKey("lastname") as! NSString
-            let email = jsonInform.valueForKey("email") as! NSString
-            let id = jsonInform.valueForKey("userid") as! NSString
-            
-            userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
-            
-            // <<<<<
-            
-            // activity indicator START
-            stopActivityIndicator()
-            
-            // registration successful, TO: StartVC
-            
-            let myAlert = UIAlertController(title: "Registration Successful", message: "Hi \(userFirstName)!\n Welcom do SuLife!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
-                self.performSegueWithIdentifier("registerToMain", sender: self)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                // MARK : post request to server >>>>>
+                
+                //  register
+                
+                params = "email=\(username)&password=\(userPassword)"
+                jsonData = commonMethods.sendRequest(registerURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
+                print("JSON data returned : ", jsonData)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                    return
+                }
+                
+                accountToken = jsonData.valueForKey("Access_Token") as! NSString as String
+                
+                // auto login
+                
+                params = "email=\(username)&password=\(userPassword)"
+                jsonData = commonMethods.sendRequest(loginURL, postString: params, postMethod: "POST", postHeader: "", accessString: "", sender: self)
+                print("JSON data returned : ", jsonData)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                    return
+                }  else {
+                    print("Success Message : ", jsonData.valueForKey("message"))
+                }
+                
+                // Send user's information to database
+                
+                params = "firstname=\(userFirstName)&lastname=\(userLastName)&email=\(userEmail)"
+                jsonData = commonMethods.sendRequest(profileURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+                print("JSON data returned : ", jsonData)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                    return
+                } else {
+                    print("Success Message : ", jsonData.valueForKey("message"))
+                }
+                
+                // get user's profile
+                jsonData = commonMethods.sendRequest(profileURL, postString: "", postMethod: "get", postHeader: accountToken, accessString: "x-access-token", sender: self)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                    commonMethods.displayAlertMessage("System Error", userMessage: "Post Profile Failed!", sender: self)
+                    return
+                }
+                let jsonInform = jsonData.valueForKey("profile") as! NSDictionary
+                let firstName = jsonInform.valueForKey("firstname") as! NSString
+                let lastName = jsonInform.valueForKey("lastname") as! NSString
+                let email = jsonInform.valueForKey("email") as! NSString
+                let id = jsonInform.valueForKey("userid") as! NSString
+                
+                userInformation = UserModel(firstName: firstName, lastName: lastName, email: email, id: id)
+                
+                // <<<<<
+                
+                // registration successful, TO: StartVC
+                
+                let myAlert = UIAlertController(title: "Registration Successful", message: "Hi \(userFirstName)!\n Welcom do SuLife!", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction!) in
+                    self.performSegueWithIdentifier("registerToMain", sender: self)
+                })
+                
+                myAlert.addAction(okAction)
+                self.presentViewController(myAlert, animated:true, completion:nil)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
             })
-            
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
         }
     }
 }

@@ -20,7 +20,7 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -46,24 +46,17 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
     }
     
     // <<<<<
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (contacts.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No contact in the list!", sender: self)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         contactList.delegate = self
         contactList.dataSource = self
-        contactList.delegate = self
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         
         activityIndicator()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         
         contactsInit = []
         contacts = []
@@ -85,8 +78,9 @@ class ContactVC: UITableViewController, UISearchBarDelegate {
             let contactID = contact.valueForKey("userid2") as! NSString
             contacts.append(getContactsProfileInformation(contactID))
         }
-        
         self.tableView.reloadData()
+        
+        stopActivityIndicator()
     }
 
     override func didReceiveMemoryWarning() {

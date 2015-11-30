@@ -19,7 +19,7 @@ class AddContactVC: UIViewController {
     var fuckingUserID: NSString = "";
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -70,8 +70,8 @@ class AddContactVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func sendRequestTapped(sender: UIButton)
-    {
+    @IBAction func sendRequestTapped(sender: UIButton) {
+        
         // TODO:
         let userEmail = ContactID.text!
         if (userEmail.isEmpty) {
@@ -83,50 +83,70 @@ class AddContactVC: UIViewController {
         
         activityIndicator()
         
-        // MARK : post request to server
-        
-        params = "email=\(userEmail)"
-        jsonData = commonMethods.sendRequest(GetUserIDURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
-        
-        print("JSON data returned : ", jsonData)
-        
-        if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
-            return
-        }
-        if (jsonData.objectForKey("user") == nil) {
-            stopActivityIndicator()
-            commonMethods.displayAlertMessage("Input Error", userMessage: "No such user!", sender: self)
-            return
-        }
-        
-        fuckingUserID = (jsonData.valueForKey("user")!.valueForKey("_id") as! NSString)
-        print("User ID : ", userInformation!.id)
-        
-        if ( fuckingUserID == userInformation!.id ) {
-            commonMethods.displayAlertMessage("Input Error", userMessage: "Don not add yourself!", sender: self)
-            stopActivityIndicator()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             
-        } else if ( isFriend(fuckingUserID) == true ) {
-            commonMethods.displayAlertMessage("Input Error", userMessage: "Contact exist already!", sender: self)
-        
-        } else {
-            params = "taker=\(fuckingUserID)"
-            jsonData = commonMethods.sendRequest(addFriendURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+            // MARK : post request to server
+            
+            params = "email=\(userEmail)"
+            jsonData = commonMethods.sendRequest(GetUserIDURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
             
             print("JSON data returned : ", jsonData)
+            
             if (jsonData.objectForKey("message") == nil) {
-                stopActivityIndicator()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+            }
+            if (jsonData.objectForKey("user") == nil) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                commonMethods.displayAlertMessage("Input Error", userMessage: "No such user!", sender: self)
                 return
             }
             
-            let myAlert = UIAlertController(title: "Friend Request Sent!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
-            myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
-                self.navigationController?.popViewControllerAnimated(true)
+            self.fuckingUserID = (jsonData.valueForKey("user")!.valueForKey("_id") as! NSString)
+            print("User ID : ", userInformation!.id)
+            
+            if ( self.fuckingUserID == userInformation!.id ) {
+                commonMethods.displayAlertMessage("Input Error", userMessage: "Don not add yourself!", sender: self)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                return
+                
+            } else if ( self.isFriend(self.fuckingUserID) == true ) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stopActivityIndicator()
+                })
+                commonMethods.displayAlertMessage("Input Error", userMessage: "Contact exist already!", sender: self)
+                return
+                
+            } else {
+                params = "taker=\(self.fuckingUserID)"
+                jsonData = commonMethods.sendRequest(addFriendURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
+                
+                print("JSON data returned : ", jsonData)
+                if (jsonData.objectForKey("message") == nil) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stopActivityIndicator()
+                    })
+                    return
+                }
+                
+                let myAlert = UIAlertController(title: "Friend Request Sent!", message: "Please wait for the reply! ", preferredStyle: UIAlertControllerStyle.Alert)
+                myAlert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action: UIAlertAction!) in
+                    self.navigationController?.popViewControllerAnimated(true)
+                    self.stopActivityIndicator()
+                }))
+                self.presentViewController(myAlert, animated: true, completion: nil)
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
                 self.stopActivityIndicator()
-            }))
-            presentViewController(myAlert, animated: true, completion: nil)
-        }
+            })
+        })
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {

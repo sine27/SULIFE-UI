@@ -11,7 +11,7 @@
         <!--startView-->
         <scene sceneID="dak-ia-GLf">
             <objects>
-                <viewController storyboardIdentifier="startView" title="startView" id="Idj-Rj-tcw" customClass="StartVC" customModule="SuLife" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="startView" title="startView" hidesBottomBarWhenPushed="YES" id="Idj-Rj-tcw" customClass="StartVC" customModule="SuLife" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7br-PK-NCc"/>
                         <viewControllerLayoutGuide type="bottom" id="a2J-dU-OSp"/>
@@ -100,7 +100,7 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <navigationItem key="navigationItem" id="CB4-3m-qSu"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <segue destination="IJa-U8-Q5u" kind="presentation" identifier="startToLogin" modalTransitionStyle="flipHorizontal" id="U9Y-pk-OCG"/>
@@ -904,7 +904,6 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="contactsTapped:" destination="6EY-K0-0Xd" eventType="touchUpInside" id="1RB-WF-9HR"/>
                                     <segue destination="adQ-qW-wIa" kind="show" identifier="profileToContacts" id="Icw-2I-2wQ"/>
                                 </connections>
                             </button>
@@ -927,7 +926,6 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="eventListTapped:" destination="6EY-K0-0Xd" eventType="touchUpInside" id="W8s-29-ENe"/>
                                     <segue destination="IjM-PE-YD0" kind="show" id="X5r-56-Ocf"/>
                                 </connections>
                             </button>
@@ -947,7 +945,6 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="todoListTapped:" destination="6EY-K0-0Xd" eventType="touchUpInside" id="e9M-Ok-j9I"/>
                                     <segue destination="K0K-mL-9pc" kind="show" identifier="profileToTasks" id="kN9-8W-Mpu"/>
                                 </connections>
                             </button>
@@ -1738,6 +1735,7 @@
                         <barButtonItem key="leftBarButtonItem" image="profile1" id="jzR-LT-M2y">
                             <inset key="imageInsets" minX="0.0" minY="10" maxX="15" maxY="10"/>
                             <connections>
+                                <action selector="profileTapped:" destination="NHD-Sd-M7n" id="HEg-ut-Zga"/>
                                 <segue destination="6EY-K0-0Xd" kind="show" identifier="calendarToProfile" id="gNS-lP-qNY"/>
                             </connections>
                         </barButtonItem>
@@ -2086,10 +2084,10 @@
                         <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g0N-g7-Hh2">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ihk-u6-RiF">
                                 <rect key="frame" x="374" y="533" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ihk-u6-RiF" secondAttribute="height" multiplier="1:1" id="1dr-ZH-eOM"/>
@@ -3358,7 +3356,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vJt-7U-0xg">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKr-BN-avi">
                                 <rect key="frame" x="355" y="564" width="39" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="dKr-BN-avi" secondAttribute="height" multiplier="4:5" id="T9Q-g5-MYT"/>
@@ -4358,14 +4356,14 @@
         <image name="write" width="44" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Lt3-U6-Wz1"/>
-        <segue reference="oEe-2u-qBY"/>
-        <segue reference="chX-aW-Pzr"/>
-        <segue reference="yYA-t4-mMW"/>
+        <segue reference="bCD-Xk-LO4"/>
         <segue reference="gNS-lP-qNY"/>
+        <segue reference="chX-aW-Pzr"/>
+        <segue reference="5oU-wj-Tr2"/>
         <segue reference="6wG-Wy-ccI"/>
-        <segue reference="o4o-IE-oOq"/>
-        <segue reference="DJh-xn-dYV"/>
+        <segue reference="PI7-CH-sHx"/>
+        <segue reference="8S7-Ie-rvG"/>
         <segue reference="M1S-ih-pc6"/>
+        <segue reference="Lt3-U6-Wz1"/>
     </inferredMetricsTieBreakers>
 </document>

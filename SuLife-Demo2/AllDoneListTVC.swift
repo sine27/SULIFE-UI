@@ -20,7 +20,7 @@ class AllDoneListTVC: UITableViewController {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -44,20 +44,10 @@ class AllDoneListTVC: UITableViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (finishedList.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No finished task in the list!", sender: self)
-        }
 
-    }
-    
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-        
-        activityIndicator()
-        
+    override func viewDidAppear(animated: Bool) {
+
         // MARK : post request to server
         
         params = ""
@@ -75,6 +65,8 @@ class AllDoneListTVC: UITableViewController {
             }
         }
         self.tableView.reloadData()
+        
+        stopActivityIndicator()
     }
     
     override func viewDidLoad() {
@@ -82,7 +74,8 @@ class AllDoneListTVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
-        TodoList.delegate = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

@@ -19,6 +19,32 @@ class NewTaskTVC: UITableViewController {
     
     var taskTime : NSString = ""
     
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
     @IBAction func timeTapped(sender: UIButton) {
         timeCell.hidden = !timeCell.hidden
         tableView.beginUpdates()
@@ -112,7 +138,17 @@ class NewTaskTVC: UITableViewController {
     }
     
     @IBAction func addTaskTapped(sender: UIBarButtonItem) {
-        addAction()
+        activityIndicator()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            self.addAction()
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.navigationController!.popToRootViewControllerAnimated(true)
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     func addAction() {
@@ -120,10 +156,10 @@ class NewTaskTVC: UITableViewController {
         let taskDetail = detailTextField.text!
         
         if (taskTitle.isEmpty || taskDetail.isEmpty) {
-            let myAlert = UIAlertController(title: "Edit Task Failed!", message: "All fields required!", preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            myAlert.addAction(okAction)
-            self.presentViewController(myAlert, animated:true, completion:nil)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
+            commonMethods.displayAlertMessage("Edit Task Failed!", userMessage: "All fields required!", sender: self)
             return
         }
         
@@ -138,10 +174,10 @@ class NewTaskTVC: UITableViewController {
         jsonData = commonMethods.sendRequest(taskURL, postString: params, postMethod: "POST", postHeader: accountToken, accessString: "x-access-token", sender: self)
         
         if (jsonData.objectForKey("message") == nil) {
-            // Check if need stopActivityIndicator()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
             return
         }
-        
-        self.navigationController!.popToRootViewControllerAnimated(true)
     }
 }

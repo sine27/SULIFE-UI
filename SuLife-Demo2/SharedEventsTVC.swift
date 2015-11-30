@@ -22,7 +22,7 @@ class SharedEventsTVC: UITableViewController {
     var contactDetail : ContactsModel?
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -47,17 +47,8 @@ class SharedEventsTVC: UITableViewController {
         blur.removeFromSuperview()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (resArray.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "Does not have shared events!", sender: self)
-        }
-    }
-    
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-
-        activityIndicator()
+    override func viewDidAppear(animated: Bool) {
         
         let contactID = contactDetail!.id
         
@@ -75,6 +66,11 @@ class SharedEventsTVC: UITableViewController {
         resArray = jsonData.valueForKey("Events") as! [NSDictionary]
         
         self.tableView.reloadData()
+        
+        stopActivityIndicator()
+        if (resArray.count == 0) {
+            commonMethods.displayAlertMessage("Alert", userMessage: "Does not have shared events!", sender: self)
+        }
     }
     
     override func viewDidLoad() {
@@ -83,7 +79,8 @@ class SharedEventsTVC: UITableViewController {
         
         EventList.delegate = self
         EventList.dataSource = self
-        EventList.delegate = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

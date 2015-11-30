@@ -15,7 +15,7 @@ class ChangePasswordVC: UIViewController {
     @IBOutlet weak var repeatNewPasswordTextField: UITextField!
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -89,19 +89,30 @@ class ChangePasswordVC: UIViewController {
     
 
     @IBAction func resetPasswordTapped(sender: AnyObject) {
-        saveAction()
+        activityIndicator()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.saveAction()
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
+        })
     }
     
     func saveAction() {
+        
         let oldPassword = oldPasswordTextField.text!
         let newPassword = newPasswordTextField.text!
         let repeatNewPassword = repeatNewPasswordTextField.text!
         
         if (newPassword != repeatNewPassword) {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
             commonMethods.displayAlertMessage("New Password Does Not Match!", userMessage: "Please Enter the New Password Again!", sender: self)
+            return
         }
-        
-        activityIndicator()
         
         // MARK : post request to server
         
@@ -110,7 +121,9 @@ class ChangePasswordVC: UIViewController {
         
         print("JSON data returned : ", jsonData)
         if (jsonData.objectForKey("message") == nil) {
-            stopActivityIndicator()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stopActivityIndicator()
+            })
             return
         }
         

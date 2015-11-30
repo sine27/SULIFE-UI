@@ -23,7 +23,7 @@ class AllTaskTVC: UITableViewController {
     var searchActive : Bool = false
     
     // MARK : Activity indicator >>>>>
-    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
     private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
     func activityIndicator() {
@@ -47,18 +47,9 @@ class AllTaskTVC: UITableViewController {
         spinner.removeFromSuperview()
         blur.removeFromSuperview()
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        stopActivityIndicator()
-        if (undoList.count == 0) {
-            commonMethods.displayAlertMessage("Alert", userMessage: "No task in the list!", sender: self)
-        }
-    }
-    
+
     // reload data in table
-    override func viewWillAppear(animated: Bool) {
-        
-        activityIndicator()
+    override func viewDidAppear(animated: Bool) {
         
         // because I user append function, the list will be reload withour clearing
         undoList = []
@@ -81,6 +72,8 @@ class AllTaskTVC: UITableViewController {
             }
         }
         self.tableView.reloadData()
+        
+        stopActivityIndicator()
     }
     
     override func viewDidLoad() {
@@ -88,6 +81,8 @@ class AllTaskTVC: UITableViewController {
         
         TodoList.delegate = self
         TodoList.dataSource = self
+        
+        activityIndicator()
     }
     
     override func didReceiveMemoryWarning() {

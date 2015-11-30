@@ -42,22 +42,6 @@ class ProfileVC: UIViewController {
         blur.removeFromSuperview()
     }
     
-    @IBAction func eventListTapped(sender: UIButton) {
-        activityIndicator()
-    }
-    
-    @IBAction func todoListTapped(sender: UIButton) {
-        activityIndicator()
-    }
-    
-    @IBAction func contactsTapped(sender: UIButton) {
-        activityIndicator()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        stopActivityIndicator()
-    }
-    
     // <<<<<
     
     override func viewDidLoad() {

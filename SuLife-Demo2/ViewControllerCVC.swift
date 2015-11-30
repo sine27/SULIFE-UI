@@ -33,11 +33,48 @@ class ViewControllerCVC: UIViewController, UITableViewDelegate, UITableViewDataS
     let commonMethods = CommonMethodCollection()
     var jsonData = NSDictionary()
     var params : String = ""
-
     
-    override func viewWillAppear(animated: Bool) {
+    // MARK : Activity indicator >>>>>
+    private var blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    private var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    func activityIndicator() {
+        
+        blur.frame = CGRectMake(30, 30, 60, 60)
+        blur.layer.cornerRadius = 10
+        blur.center = self.view.center
+        blur.clipsToBounds = true
+        
+        spinner.frame = CGRectMake(0, 0, 50, 50)
+        spinner.hidden = false
+        spinner.center = self.view.center
+        spinner.startAnimating()
+        
+        self.view.addSubview(blur)
+        self.view.addSubview(spinner)
+    }
+    
+    func stopActivityIndicator() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+        blur.removeFromSuperview()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopActivityIndicator()
+    }
+    // <<<<<
+    
+    @IBAction func profileTapped(sender: UIBarButtonItem) {
+        activityIndicator()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         // MARK : event table view
+        activityIndicator()
         loadTable()
+        stopActivityIndicator()
     }
     
     func loadTable () {
