@@ -56,10 +56,20 @@ class SearchMapVC: UIViewController, UISearchBarDelegate, MKMapViewDelegate {
         locationManager.startUpdatingLocation()
         
         mapView.showsUserLocation = true
-        initialLocation = locationManager.location!
         
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(initialLocation.coordinate, 4000, 4000)
-        mapView.setRegion(coordinateRegion, animated: true)
+        if (eventLocation?.coordinate != nil) {
+            addPinToMapView(eventLocation!.placeName, latitude: eventLocation!.coordinate.latitude, longitude: eventLocation!.coordinate.longitude)
+            
+            initialLocation = CLLocation( latitude: (eventLocation!.coordinate.latitude as CLLocationDegrees), longitude: (eventLocation!.coordinate.longitude as CLLocationDegrees))
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(initialLocation.coordinate, 4000, 4000)
+            mapView.setRegion(coordinateRegion, animated: true)
+            
+        } else {
+            initialLocation = locationManager.location!
+            
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(initialLocation.coordinate, 4000, 4000)
+            mapView.setRegion(coordinateRegion, animated: true)
+        }
         
         // MARK : drop pin
         

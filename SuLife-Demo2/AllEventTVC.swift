@@ -78,17 +78,7 @@ class AllEventTVC: UITableViewController {
         EventList.delegate = self
         EventList.dataSource = self
         EventList.delegate = self
-    
-        // Tab The blank place, close keyboard
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
-        view.addGestureRecognizer(tap)
     }
-    
-    //Text field
-    func DismissKeyboard () {
-        view.endEditing(true)
-    }
-    // <<<<<
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
